@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ArrayOfDemandAccount xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DemandAccount>
+    <_days>6</_days>
+    <Sum>1061.520150601</Sum>
+    <Percentage>1</Percentage>
+    <Id>1</Id>
+    <Name>До востребования №1-529</Name>
+  </DemandAccount>
+</ArrayOfDemandAccount>

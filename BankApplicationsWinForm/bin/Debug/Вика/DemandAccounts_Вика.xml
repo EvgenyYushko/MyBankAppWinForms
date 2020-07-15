@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ArrayOfDemandAccount xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DemandAccount>
+    <_days>6</_days>
+    <dateTime>2020-02-28T21:06:48.0759276+03:00</dateTime>
+    <Sum>3538.04</Sum>
+    <Percentage>1</Percentage>
+    <Id>1</Id>
+    <Name>До востребования №1-872</Name>
+  </DemandAccount>
+</ArrayOfDemandAccount>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <User>
+    <Name>Вика</Name>
+    <Fio>в</Fio>
+    <Password>1</Password>
+  </User>
+  <User>
+    <Name>Женя</Name>
+    <Fio>аы</Fio>
+    <Password>1</Password>
+  </User>
+  <User>
+    <Name>Света</Name>
+    <Fio>1</Fio>
+    <Password>1</Password>
+  </User>
+  <User>
+    <Name>Евгений</Name>
+    <Fio>Юшко</Fio>
+    <Password>1</Password>
+  </User>
+</ArrayOfUser>

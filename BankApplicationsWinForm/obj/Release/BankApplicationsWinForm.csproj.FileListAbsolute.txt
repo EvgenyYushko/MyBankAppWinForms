@@ -1,0 +1,16 @@
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\bin\Release\BankApplicationsWinForm.exe.config
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\bin\Release\BankApplicationsWinForm.exe
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\bin\Release\BankApplicationsWinForm.pdb
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\bin\Release\BankLibrary.dll
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\bin\Release\BankLibrary.pdb
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.MainForm.resources
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.OpenForm.resources
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.ValidateForm.resources
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.WithdrawForm.resources
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.PutForm.resources
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.CloseForm.resources
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.Properties.Resources.resources
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.csproj.GenerateResource.Cache
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.exe
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.pdb
+E:\С#\Мои проекты\BankApplicationsWinForm\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.CreateUserForm.resources

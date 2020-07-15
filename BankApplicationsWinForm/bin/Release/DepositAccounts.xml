@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ArrayOfDepositAccount xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DepositAccount>
+    <_days>0</_days>
+    <Sum>33333</Sum>
+    <Percentage>40</Percentage>
+    <Id>2</Id>
+    <Name>Депозитный счёт №1-322</Name>
+  </DepositAccount>
+</ArrayOfDepositAccount>
