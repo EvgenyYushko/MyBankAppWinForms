@@ -44,12 +44,12 @@ namespace BankApplicationsWinForm
             timer.Tick += timer_Tick;
             timer.Start();
 
-            _idName = validateForm.user.Name;
-            groupBox1.Text = "Клиент: " + validateForm.user.Name;
+            _idName = validateForm._name;
+            groupBox1.Text = "Клиент: " + validateForm._name;
             //if (validateForm.ValidTextBox.Text.Equals("Евгений"))
             //{
             //_id = 1;
-            LoadDocuments($"{validateForm.user.Name}");
+            LoadDocuments($"{validateForm._name}");
             //}
             //if (validateForm.ValidTextBox.Text.Equals("Вика"))
             //{

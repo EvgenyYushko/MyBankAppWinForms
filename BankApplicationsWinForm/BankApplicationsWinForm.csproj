@@ -36,6 +36,7 @@
       <HintPath>..\..\BankApplication\BankApplication\BankLibrary\bin\Debug\BankLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -70,6 +71,7 @@
     <Compile Include="OpenForm.Designer.cs">
       <DependentUpon>OpenForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Services\DataBaseService.cs" />
     <Compile Include="ValidateForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,7 +96,7 @@
     <Compile Include="CloseForm.Designer.cs">
       <DependentUpon>CloseForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Service.cs" />
+    <Compile Include="Services\Service.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CreateUserForm.resx">

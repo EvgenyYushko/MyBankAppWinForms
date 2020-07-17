@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankApplicationsWinForm.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +15,6 @@ namespace BankApplicationsWinForm
 {
     public partial class CreateUserForm : Form
     {
-
         List<User> userList;
         User user;
 
@@ -30,37 +30,53 @@ namespace BankApplicationsWinForm
                 MessageBox.Show("Пароли не совпадают", "Внимание!");
             else
             {
-                try
+                var FIO = textBox2.Text + " " + textBox1.Text;
+                var password = textBox4.Text;
+                var login = textBox5.Text;
+
+                //Новая реализация сохранения в базу
+                string sqlExpression = $"INSERT tbUsers VALUES ('{FIO}', 'true', NULL, '{password}', '{login}')";
+                if (!DataBaseService.ExecInsert(sqlExpression))
                 {
-                    XmlSerializer deserializeUser = new XmlSerializer(typeof(List<User>));
-                    //сначало загружаем базу
-                    using (var stream = new FileStream($"UsersData.xml", FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        userList = deserializeUser.Deserialize(stream) as List<User>;
-                        Service.LogWrite($"User {textBox1.Text} загружен");
-                    }
-                }
-                catch (Exception)
-                {
+                    Service.LogWrite($"Ошибка добавления данных в базу: ");
+                    throw new Exception("Ошибка добавления данных в базу");
                 }
 
-                user = new User
-                {
-                    Fio = textBox2.Text,
-                    Name = textBox1.Text,
-                    Password = textBox4.Text
-                };
+                #region OldRealisation
 
-                userList.Add(user);
+                //try
+                //{
+                //    XmlSerializer deserializeUser = new XmlSerializer(typeof(List<User>));
+                //    //сначало загружаем базу
+                //    using (var stream = new FileStream($"UsersData.xml", FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        userList = deserializeUser.Deserialize(stream) as List<User>;
+                //        Service.LogWrite($"User {textBox1.Text} загружен");
+                //    }
+                //}
+                //catch (Exception)
+                //{
+                //}
 
-                XmlSerializer formatterUser = new XmlSerializer(typeof(List<User>));
+                //user = new User
+                //{
+                //    Fio = textBox2.Text,
+                //    Name = textBox1.Text,
+                //    Password = textBox4.Text
+                //};
 
-                using (var stream = new FileStream($"UsersData.xml", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
-                {
-                    formatterUser.Serialize(stream, userList);
-                    Service.LogWrite($"Создан {user.Name}");
-                }
-                MessageBox.Show($"Аккаунт {user.Name} создан.");
+                //userList.Add(user);
+
+                //XmlSerializer formatterUser = new XmlSerializer(typeof(List<User>));
+
+                //using (var stream = new FileStream($"UsersData.xml", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
+                //{
+                //    formatterUser.Serialize(stream, userList);
+                //    Service.LogWrite($"Создан {user.Name}");
+                //}
+                //MessageBox.Show($"Аккаунт {user.Name} создан."); 
+                #endregion
+
                 this.Close();
             }
         }

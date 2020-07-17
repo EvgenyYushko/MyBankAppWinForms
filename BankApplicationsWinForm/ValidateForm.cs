@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using BankApplicationsWinForm.Services;
 
 namespace BankApplicationsWinForm
 {
@@ -17,7 +18,8 @@ namespace BankApplicationsWinForm
     {
         MainForm mainFrom;
         CreateUserForm createUserForm;
-        public User user;
+        //public User user;
+        public string _name;
         List<User> listUser;
 
         public ValidateForm()
@@ -51,39 +53,71 @@ namespace BankApplicationsWinForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            XmlSerializer deserializeUser = new XmlSerializer(typeof(List<User>));
-            try
-            {
-                using (var stream = new FileStream($"UsersData.xml", FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    listUser = deserializeUser.Deserialize(stream) as List<User>;
-                    Service.LogWrite($"User {textBox1.Text} загружен");
-                }
-            }
-            catch (Exception ex)
-            {
-                Service.LogWrite($"{ex.Message}");
-                MessageBox.Show($"Пользователя {textBox1.Text} нет в системе", "Ошибка входа");
-                return;
-            }
+            // Новая реализация
+            var dt = DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", $"{textBox1.Text}", "tbUsers");
 
-            foreach (User item in listUser)
+            if (dt.Rows.Count != 0)
             {
-                if (item.Name == textBox1.Text)
+                foreach (DataRow row in dt.Rows)
                 {
-                    user = item;
-                    Service.LogWrite($"{user.Name} найден в системе");
-                    if (textBox2.Text.Equals(user.Password))
+                    var login = row["Login"];
+                    var password = row["Password"];
+
+                    if (textBox2.Text.Equals(password))
                     {
+                        _name = (string)login;
                         progressBar1.Value = 0;
                         progressBar1.Visible = true;
                         timer1.Enabled = true;
                         timer1.Start();
                         this.Enabled = false;
                     }
-                    else MessageBox.Show("Неверный логин", "Ошибка входа");
+                    else MessageBox.Show("Неверный пароль", "Ошибка входа");
                 }
             }
+            else
+            {
+                Service.LogWrite($"Пользователя {textBox1.Text} нет в системе");
+                MessageBox.Show($"Пользователя {textBox1.Text} нет в системе", "Ошибка входа");
+                return;
+            }
+
+            #region OldRealization
+            //XmlSerializer deserializeUser = new XmlSerializer(typeof(List<User>));
+            //try
+            //{
+            //    using (var stream = new FileStream($"UsersData.xml", FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        listUser = deserializeUser.Deserialize(stream) as List<User>;
+            //        Service.LogWrite($"User {textBox1.Text} загружен");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Service.LogWrite($"{ex.Message}");
+            //    MessageBox.Show($"Пользователя {textBox1.Text} нет в системе", "Ошибка входа");
+            //    return;
+            //}
+
+
+            //foreach (User item in listUser)
+            //{
+            //    if (item.Name == textBox1.Text)
+            //    {
+            //        user = item;
+            //        Service.LogWrite($"{user.Name} найден в системе");
+            //        if (textBox2.Text.Equals(user.Password))
+            //        {
+            //            progressBar1.Value = 0;
+            //            progressBar1.Visible = true;
+            //            timer1.Enabled = true;
+            //            timer1.Start();
+            //            this.Enabled = false;
+            //        }
+            //        else MessageBox.Show("Неверный логин", "Ошибка входа");
+            //    }
+            //} 
+            #endregion
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
