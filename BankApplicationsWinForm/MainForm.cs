@@ -12,6 +12,7 @@ using BankLibrary.Enams;
 using System.Xml.Serialization;
 using System.IO;
 using System.Diagnostics;
+using BankApplicationsWinForm.Services;
 
 namespace BankApplicationsWinForm
 {
@@ -23,6 +24,8 @@ namespace BankApplicationsWinForm
         ToolStripLabel infoLabel;
         Timer timer;
         public string _idName;
+        public int _userID;
+
         public MainForm()
         {
         }
@@ -45,6 +48,7 @@ namespace BankApplicationsWinForm
             timer.Start();
 
             _idName = validateForm._name;
+            _userID = validateForm._userId;
             groupBox1.Text = "Клиент: " + validateForm._name;
             //if (validateForm.ValidTextBox.Text.Equals("Евгений"))
             //{
@@ -58,6 +62,51 @@ namespace BankApplicationsWinForm
             //}
         }
 
+        #region Свойства для доступа к полям MainForm
+
+        public Panel Panel
+        {
+            get { return panel1; }
+            set { panel1 = value; }
+        }
+
+        public ComboBox ComboBox
+        {
+            get { return comboBox1; }
+            set { comboBox1 = value; }
+        }
+
+        public Label labelDayProp
+        {
+            get => labelDay;
+            set => labelDay = value;
+        }
+
+        public Label LabelInfoProp
+        {
+            get => labelInfo;
+            set => labelInfo = value;
+        }
+
+        public TextBox TextBox2Prop
+        {
+            get { return textBox2; }
+            set { textBox2 = value; }
+        }
+
+        public TextBox TextBox3Prop
+        {
+            get { return textBox3; }
+            set { textBox3 = value; }
+        }
+
+        public TextBox TextBox4Prop
+        {
+            get { return textBox4; }
+            set { textBox4 = value; }
+        }
+        #endregion
+
         void timer_Tick(object sender, EventArgs e)
         {
             dateLabel.Text = DateTime.Now.ToLongDateString();
@@ -65,7 +114,6 @@ namespace BankApplicationsWinForm
         }
 
         Bank<Account> bank = new Bank<Account>("ЮнитБанк");
-
 
         private void bOpen_Click(object sender, EventArgs e)
         {
@@ -110,6 +158,7 @@ namespace BankApplicationsWinForm
             //closeForm.Show();
             //bank.CalculatePercentage();
         }
+
         private void CloseAccount(Bank<Account> bank, int id)
         {
             try
@@ -211,50 +260,6 @@ namespace BankApplicationsWinForm
 
         #endregion
 
-        #region Свойства для доступа к полям MainForm
-
-        public Panel Panel
-        {
-            get { return panel1; }
-            set { panel1 = value; }
-        }
-
-        public ComboBox ComboBox
-        {
-            get { return comboBox1; }
-            set { comboBox1 = value; }
-        }
-
-        public Label labelDayProp
-        {
-            get => labelDay;
-            set => labelDay = value;
-        }
-
-        public Label LabelInfoProp
-        {
-            get => labelInfo;
-            set => labelInfo = value;
-        }
-
-        public TextBox TextBox2Prop
-        {
-            get { return textBox2; }
-            set { textBox2 = value; }
-        }
-
-        public TextBox TextBox3Prop
-        {
-            get { return textBox3; }
-            set { textBox3 = value; }
-        }
-
-        public TextBox TextBox4Prop
-        {
-            get { return textBox4; }
-            set { textBox4 = value; }
-        }
-        #endregion
 
         #region Сериализация/Десериализация объеткта Account
 
@@ -290,6 +295,16 @@ namespace BankApplicationsWinForm
                                 demList.Add(s);
                             }
                         }
+
+                        // Новая реализация
+                        var stringWriter = new StringWriter();
+
+                        formatterDemand.Serialize(stringWriter, demList.ToArray());
+
+                        var data = stringWriter.ToString();
+                        DataBaseService.ExecUpdate("Login = @Login", "Login", "Евгений", "tbUsers", $"{data}", _userID, "DemandData");
+                        //
+
                         formatterDemand.Serialize(stream, demList.ToArray());
                         Service.LogWrite("Объект DemandAccount сохранён");
                         saveDamand = true;
@@ -313,6 +328,16 @@ namespace BankApplicationsWinForm
                                 depList.Add(s);
                             }
                         }
+
+                        // Новая реализация
+                        var stringWriter = new StringWriter();
+
+                        formatterDemand.Serialize(stringWriter, depList.ToArray());
+
+                        var data = stringWriter.ToString();
+                        DataBaseService.ExecUpdate("Login = @Login", "Login", "Евгений", "tbUsers", $"{data}", _userID, "DepositData");
+                        //
+
                         formatterDeposit.Serialize(stream, depList.ToArray());
                         Service.LogWrite($"Объект DepositAccounts_{idName} сохранён");
                         saveDeposit = true;

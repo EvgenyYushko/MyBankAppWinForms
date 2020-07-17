@@ -802,3 +802,94 @@
 [17.07.2020 13:31:02] Объект DemandAccount сохранён
 [17.07.2020 13:31:02] Объект DepositAccounts_Евгений сохранён
 [17.07.2020 13:31:02] Сохранение ОК
+[17.07.2020 15:13:40] Нет доступа к данным! Проверьте настройки! : System.Data.SqlClient.SqlException (0x80131904): Необходимо объявить скалярную переменную "@Login".
+   в System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   в System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   в System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   в System.Data.SqlClient.SqlDataReader.get_MetaData()
+   в System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   в System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, String srcTable)
+   в BankApplicationsWinForm.Services.DataBaseService.ExecSelect(String sqlSelect, String sqlConditions, String sqlParam, String nameParam, String nameTable) в E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\Services\DataBaseService.cs:строка 49
+ClientConnectionId:0103f405-f7c0-4cd5-a8c2-8ac5033464de
+Error Number: 137, State: 2, Class: 15
+[17.07.2020 15:19:10] Пользователя Евгений нет в системе
+[17.07.2020 15:21:19] Объект DemandAccount_Евгений загружен
+[17.07.2020 15:21:19] Объект DepositAccount_Евгений загружен
+[17.07.2020 15:21:19] Загрзка ОК
+[17.07.2020 15:28:44] В документе XML (0, 0) присутствует ошибка.
+[17.07.2020 15:28:44] Объект DepositAccount_Евгений загружен
+[17.07.2020 15:28:44] Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:28:46] Нет аккаунта DemandAccount_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:28:46] Нет аккаунта DepositAccounts_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:28:46] Ошибка сохранения!
+[17.07.2020 15:28:53] Нет аккаунта DemandAccount_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:28:53] Нет аккаунта DepositAccounts_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:28:53] Ошибка сохранения!
+[17.07.2020 15:29:10] В документе XML (0, 0) присутствует ошибка.
+[17.07.2020 15:29:10] В документе XML (0, 0) присутствует ошибка.
+[17.07.2020 15:29:10] Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:29:13] Нет аккаунта DemandAccount_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:29:13] Нет аккаунта DepositAccounts_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:29:13] Ошибка сохранения!
+[17.07.2020 15:29:15] Нет аккаунта DemandAccount_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:29:15] Нет аккаунта DepositAccounts_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:29:15] Ошибка сохранения!
+[17.07.2020 15:29:38] В документе XML (0, 0) присутствует ошибка.
+[17.07.2020 15:29:38] В документе XML (0, 0) присутствует ошибка.
+[17.07.2020 15:29:38] Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:31:29] В документе XML (9, 11) присутствует ошибка.
+[17.07.2020 15:31:29] В документе XML (9, 11) присутствует ошибка.
+[17.07.2020 15:31:29] Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 15:32:51] Объект DemandAccount_Евгений загружен
+[17.07.2020 15:32:51] Объект DepositAccount_Евгений загружен
+[17.07.2020 15:32:51] Загрзка ОК
+[17.07.2020 16:05:22] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:05:22] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:05:22] Загрзка ОК
+[17.07.2020 16:14:26] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:14:26] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:14:26] Загрзка ОК
+[17.07.2020 16:15:32] В документе XML (0, 0) присутствует ошибка.
+[17.07.2020 16:15:32] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:15:32] Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 16:15:42] Нет аккаунта DemandAccount_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 16:15:43] Нет аккаунта DepositAccounts_Евгений! Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 16:15:43] Ошибка сохранения!
+[17.07.2020 16:16:08] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:16:08] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:16:08] Загрзка ОК
+[17.07.2020 16:20:34] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:20:34] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:20:34] Загрзка ОК
+[17.07.2020 16:28:01] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:28:01] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:28:01] Загрзка ОК
+[17.07.2020 16:28:35] Объект DemandAccount сохранён
+[17.07.2020 16:29:52] Объект DepositAccounts_Евгений сохранён
+[17.07.2020 16:29:54] Сохранение ОК
+[17.07.2020 16:30:04] Объект DemandAccount сохранён
+[17.07.2020 16:30:07] Объект DepositAccounts_Евгений сохранён
+[17.07.2020 16:30:07] Сохранение ОК
+[17.07.2020 16:31:05] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:31:05] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:31:05] Загрзка ОК
+[17.07.2020 16:31:41] Объект DemandAccount сохранён
+[17.07.2020 16:31:42] Ошибка при создании документа XML.
+[17.07.2020 16:32:00] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:32:00] В документе XML (0, 0) присутствует ошибка.
+[17.07.2020 16:32:00] Ссылка на объект не указывает на экземпляр объекта.
+[17.07.2020 16:33:13] Объект DemandAccount_Евгений загружен
+[17.07.2020 16:33:13] Объект DepositAccount_Евгений загружен
+[17.07.2020 16:33:13] Загрзка ОК
+[17.07.2020 16:34:11] Объект DemandAccount сохранён
+[17.07.2020 16:34:16] Ошибка при создании документа XML.
