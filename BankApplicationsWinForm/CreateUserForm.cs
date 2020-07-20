@@ -15,13 +15,13 @@ namespace BankApplicationsWinForm
 {
     public partial class CreateUserForm : Form
     {
-        List<User> userList;
-        User user;
+        //List<User> userList;
+        //User user;
 
         public CreateUserForm()
         {
             InitializeComponent();
-            userList = new List<User>();
+            //userList = new List<User>();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -90,36 +90,37 @@ namespace BankApplicationsWinForm
             }
         }
     }
+    #region OldRealization
+    //[Serializable]
+    //public class User
+    //{
+    //    private string name;
+    //    private string fio;
+    //    private string password;
 
-    [Serializable]
-    public class User
-    {
-        private string name;
-        private string fio;
-        private string password;
+    //    public string Name
+    //    {
+    //        get { return name; }
+    //        set { name = value; }
+    //    }
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+    //    public string Fio
+    //    {
+    //        get { return fio; }
+    //        set { fio = value; }
+    //    }
 
-        public string Fio
-        {
-            get { return fio; }
-            set { fio = value; }
-        }
+    //    public string Password
+    //    {
+    //        get { return password; }
+    //        set { password = value; }
+    //    }
 
-        public string Password
-        {
-            get { return password; }
-            set { password = value; }
-        }
-
-        public User()
-        {
-        }
-    }
+    //    public User()
+    //    {
+    //    } 
+    //}
+        #endregion
 }
 
 

@@ -20,7 +20,6 @@ E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Debug
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Debug\BankApplicationsWinForm.pdb
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Debug\BankLibrary.dll
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Debug\BankLibrary.pdb
-E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.csprojResolveAssemblyReference.cache
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.CreateUserForm.resources
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.MainForm.resources
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.OpenForm.resources
@@ -32,3 +31,4 @@ E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.csproj.GenerateResource.Cache
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.exe
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.pdb
+E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.csprojResolveAssemblyReference.cache

@@ -20,14 +20,15 @@ namespace BankApplicationsWinForm
         CreateUserForm createUserForm;
         //public User user;
         public string _name;
-        List<User> listUser;
+        public int _userId;
+        //List<User> listUser;
 
         public ValidateForm()
         {
             InitializeComponent();
             Invalidate();
             textBox1.Text = "Евгений"; //временно для удобства пользования
-            listUser = new List<User>();
+            //listUser = new List<User>();
             //задание условий для прогрес бара
             timer1.Interval = 100;
             timer1.Enabled = false;
@@ -46,15 +47,10 @@ namespace BankApplicationsWinForm
             set { textBox1 = value; }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             // Новая реализация
-            var dt = DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", $"{textBox1.Text}", "tbUsers");
+            var dt = DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{textBox1.Text}", "tbUsers");
 
             if (dt.Rows.Count != 0)
             {
@@ -62,10 +58,12 @@ namespace BankApplicationsWinForm
                 {
                     var login = row["Login"];
                     var password = row["Password"];
+                    var userId = row["User_ID"];
 
                     if (textBox2.Text.Equals(password))
                     {
                         _name = (string)login;
+                        _userId = (int)userId;
                         progressBar1.Value = 0;
                         progressBar1.Visible = true;
                         timer1.Enabled = true;
@@ -118,6 +116,11 @@ namespace BankApplicationsWinForm
             //    }
             //} 
             #endregion
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
