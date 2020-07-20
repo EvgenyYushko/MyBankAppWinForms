@@ -15,6 +15,7 @@ using System.Diagnostics;
 using BankApplicationsWinForm.Services;
 using System.Xml;
 using BankApplicationsWinForm.Models;
+using BankApplicationsWinForm.Interfaces;
 
 namespace BankApplicationsWinForm
 {
@@ -25,9 +26,8 @@ namespace BankApplicationsWinForm
         ToolStripLabel timeLabel;
         ToolStripLabel infoLabel;
         Timer timer;
-        SaveOrLoader saveOrLoader;
         Bank<Account> bank;
-
+        ISaveOrLoadable _saveOrLoadable;
         public string _idName;
         public int _userID;
 
@@ -57,7 +57,7 @@ namespace BankApplicationsWinForm
             groupBox1.Text = "Клиент: " + validateForm._name;
 
             bank = new Bank<Account>("ЮнитБанк");
-            saveOrLoader = new SaveOrLoader(this, bank);
+            _saveOrLoadable = new SaveOrLoader(this, bank);
             //if (validateForm.ValidTextBox.Text.Equals("Евгений"))
             //{
             //_id = 1;
@@ -282,13 +282,13 @@ namespace BankApplicationsWinForm
 
         private void SaveDocuments(string idName)
         {
-            if (!saveOrLoader.SaveDocuments(idName))
+            if (!_saveOrLoadable.SaveDocuments(idName))
                 throw new Exception("Ошибка сохранения");
         }
 
         private void LoadDocuments(string idName)
         {
-            if(!saveOrLoader.LoadDocuments(idName))
+            if(!_saveOrLoadable.LoadDocuments(idName))
             {
                 Service.LogWrite("Ошибка загрузки данных");
                 this.button2.Text = "Error";

@@ -1,4 +1,5 @@
-﻿using BankApplicationsWinForm.Services;
+﻿using BankApplicationsWinForm.Interfaces;
+using BankApplicationsWinForm.Services;
 using BankLibrary;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Xml.Serialization;
 
 namespace BankApplicationsWinForm.Models
 {
-    public class SaveOrLoader
+    public class SaveOrLoader : ISaveOrLoadable
     {
         MainForm mainForm;
         Bank<Account> bank;

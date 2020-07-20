@@ -59,6 +59,7 @@
       <DependentUpon>CreateUserForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Enam\ProgressBarDisplayMode.cs" />
+    <Compile Include="Interfaces\ISaveOrLoadable.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
