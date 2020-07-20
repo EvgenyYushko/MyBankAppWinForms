@@ -24,7 +24,6 @@ namespace BankApplicationsWinForm.Models
 
         public SaveOrLoader(MainForm mainForm, Bank<Account> bank)
         {
-
             this.mainForm = mainForm;
             this.bank = bank;
         }

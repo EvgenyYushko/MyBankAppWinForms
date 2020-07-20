@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using BankLibrary;
 using BankLibrary.Enams;
 using System.IO;
+using BankApplicationsWinForm.Models;
 
 namespace BankApplicationsWinForm
 {
@@ -17,6 +18,7 @@ namespace BankApplicationsWinForm
     {
         MainForm mainForm;
         Bank<Account> bank;
+        AccountEventsArcuments _accountEventsArcuments;
 
         public OpenForm()
         {
@@ -29,6 +31,7 @@ namespace BankApplicationsWinForm
             mainForm.Enabled = false;
             this.mainForm = mainForm;
             this.bank = bank;
+            this._accountEventsArcuments = mainForm._accountEventsArcuments;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -62,43 +65,40 @@ namespace BankApplicationsWinForm
             //int type = Convert.ToInt32(this.textBox2.Text);
             bank.Open(accountType,
                 sum,
-                AddSumHandler,  // обработчик добавления средств на счет
-                WithdrawSumHandler, // обработчик вывода средств
-                                    /*(o, e) => mainForm.labelPer.Text = e.Message,*/ // обработчик начислений процентов в виде лямбда-выражения
-                CloseAccountHandler, // обработчик закрытия счета
-                OpenAccountHandler); // обработчик открытия счета
+                _accountEventsArcuments.AddSumHandler,  // обработчик добавления средств на счет
+                _accountEventsArcuments.WithdrawSumHandler, // обработчик вывода средств
+                                                            /*(o, e) => mainForm.labelPer.Text = e.Message,*/ // обработчик начислений процентов в виде лямбда-выражения
+                _accountEventsArcuments.CloseAccountHandler, // обработчик закрытия счета
+                _accountEventsArcuments.OpenAccountHandler); // обработчик открытия счета
 
         }
 
-        // обработчики событий класса Account
-        // обработчик открытия счета
-        private void OpenAccountHandler(object sender, AccountEventArgs e)
-        {
-            MessageBox.Show(e.Message, "Результат");
-            Service.LogWrite(e.Message);
-            
-            this.mainForm.LabelInfoProp.Text = e.Message;
-            this.Close();
-        }
-        // обработчик добавления денег на счет
-        private void AddSumHandler(object sender, AccountEventArgs e)
-        {
-            mainForm.LabelInfoProp.Text = e.Message;
-            Service.LogWrite(e.Message);
-            mainForm.LabelInfoProp.Text += "\n" + "Общая сумма равна:" + e.Sum;
-        }
-        // обработчик вывода средств
-        private void WithdrawSumHandler(object sender, AccountEventArgs e)
-        {
-            mainForm.LabelInfoProp.Text = e.Message;
-            Service.LogWrite(e.Message);
-        }
-        // обработчик закрытия счета
-        private void CloseAccountHandler(object sender, AccountEventArgs e)
-        {
-            mainForm.LabelInfoProp.Text = e.Message;
-            Service.LogWrite(e.Message);
-        }
+        //// обработчики событий класса Account
+        //// обработчик открытия счета
+        //private void OpenAccountHandler(object sender, AccountEventArgs e)
+        //{
+        //    Service.LogWrite(e.Message);
+        //    mainForm.LabelInfoProp.Text = e.Message;
+        //}
+        //// обработчик добавления денег на счет
+        //private void AddSumHandler(object sender, AccountEventArgs e)
+        //{
+        //    mainForm.LabelInfoProp.Text = e.Message;
+        //    Service.LogWrite(e.Message);
+        //    mainForm.LabelInfoProp.Text += "\n" + "Общая сумма равна:" + e.Sum;
+        //}
+        //// обработчик вывода средств
+        //private void WithdrawSumHandler(object sender, AccountEventArgs e)
+        //{
+        //    mainForm.LabelInfoProp.Text = e.Message;
+        //    Service.LogWrite(e.Message);
+        //}
+        //// обработчик закрытия счета
+        //private void CloseAccountHandler(object sender, AccountEventArgs e)
+        //{
+        //    mainForm.LabelInfoProp.Text = e.Message;
+        //    Service.LogWrite(e.Message);
+        //}
 
         private void OpenForm_FormClosed(object sender, FormClosedEventArgs e)
         {

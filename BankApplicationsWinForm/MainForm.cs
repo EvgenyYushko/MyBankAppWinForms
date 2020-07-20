@@ -27,6 +27,7 @@ namespace BankApplicationsWinForm
         ToolStripLabel infoLabel;
         Timer timer;
         Bank<Account> bank;
+        public AccountEventsArcuments _accountEventsArcuments;
         ISaveOrLoadable _saveOrLoadable;
         public string _idName;
         public int _userID;
@@ -55,8 +56,10 @@ namespace BankApplicationsWinForm
             _idName = validateForm._name;
             _userID = validateForm._userId;
             groupBox1.Text = "Клиент: " + validateForm._name;
+            _accountEventsArcuments = new AccountEventsArcuments(this);
 
             bank = new Bank<Account>("ЮнитБанк");
+
             _saveOrLoadable = new SaveOrLoader(this, bank);
             //if (validateForm.ValidTextBox.Text.Equals("Евгений"))
             //{
@@ -246,38 +249,6 @@ namespace BankApplicationsWinForm
             Process.Start(@"trace.txt");
         }
 
-        #region обработчики событий если объекты дессериализованы( костыль :( )
-
-        private void OpenAccountHandler(object sender, AccountEventArgs e)
-        {
-            MessageBox.Show(e.Message, "Результат");
-            Service.LogWrite(e.Message);
-
-            LabelInfoProp.Text = e.Message;
-            Close();
-        }
-        // обработчик добавления денег на счет
-        private void AddSumHandler(object sender, AccountEventArgs e)
-        {
-            LabelInfoProp.Text = e.Message;
-            Service.LogWrite(e.Message);
-            LabelInfoProp.Text += "\n" + "Общая сумма равна:" + e.Sum;
-        }
-        // обработчик вывода средств
-        private void WithdrawSumHandler(object sender, AccountEventArgs e)
-        {
-            LabelInfoProp.Text = e.Message;
-            Service.LogWrite(e.Message);
-        }
-        // обработчик закрытия счета
-        private void CloseAccountHandler(object sender, AccountEventArgs e)
-        {
-            LabelInfoProp.Text = e.Message;
-            Service.LogWrite(e.Message);
-        }
-
-        #endregion
-
         #region Сериализация/Десериализация объеткта Account
 
         private void SaveDocuments(string idName)
@@ -288,16 +259,17 @@ namespace BankApplicationsWinForm
 
         private void LoadDocuments(string idName)
         {
-            if(!_saveOrLoadable.LoadDocuments(idName))
+            if(_saveOrLoadable.LoadDocuments(idName))
+            {
+                //Присваивание обработчиков для аккаунтов если они были десиреализованы
+                bank.Open(_accountEventsArcuments.AddSumHandler, _accountEventsArcuments.WithdrawSumHandler,
+                    _accountEventsArcuments.CloseAccountHandler, _accountEventsArcuments.OpenAccountHandler);
+            }
+            else
             {
                 Service.LogWrite("Ошибка загрузки данных");
                 this.button2.Text = "Error";
                 throw new Exception("Ошибка загрузки данных");
-            }
-            else
-            {
-                //Присваивание обработчиков для аккаунтов если они были десиреализованы
-                bank.Open(AddSumHandler, WithdrawSumHandler, CloseAccountHandler, OpenAccountHandler);
             }
         }
         #endregion
