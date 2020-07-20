@@ -15,9 +15,20 @@ namespace BankApplicationsWinForm.Services
         // получаем строку подключения
         static string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
+        /// <summary>
+        /// Обновить данные в базе
+        /// </summary>
+        /// <param name="sqlConditions">условие выборки</param>
+        /// <param name="sqlParam">"Login"</param>
+        /// <param name="nameParam">"Евгений"</param>
+        /// <param name="nameTable">Имя таблицы "tbUsers"</param>
+        /// <param name="data">Данные для сохранения</param>
+        /// <param name="userId"></param>
+        /// <param name="nameColumn">Имя столбца</param>
+        /// <returns></returns>
         public static bool ExecUpdate(string sqlConditions, string sqlParam, string nameParam, string nameTable, string data, int userId, string nameColumn)
         {
-            var dt = ExecSelect($"SELECT * FROM {nameTable}", "Login = @Login", "Login", $"Евгений", "tbUsers");
+            var dt = ExecSelect($"SELECT * FROM {nameTable}", sqlConditions, sqlParam, nameParam, nameTable);
 
             if (dt.Rows.Count != 0)
             {
@@ -41,14 +52,11 @@ namespace BankApplicationsWinForm.Services
             }
             else
             {
-
                 //string sqlExpression = $"INSERT tbUsers VALUES ('{FIO}', 'true', NULL, '{password}', '{login}')";
-
                 Service.LogWrite($"Отсутствует данный пользователь");
                 MessageBox.Show($"Отсутствует данный пользователь!", "Ошибка входа");
                 return false;
             }
-
 
         }
 
@@ -67,6 +75,15 @@ namespace BankApplicationsWinForm.Services
             return false;
         }
 
+        /// <summary>
+        /// Получить данные из базы
+        /// </summary>
+        /// <param name="sqlSelect">Выражения выборки</param>
+        /// <param name="sqlConditions">Условия выборки</param>
+        /// <param name="sqlParam"></param>
+        /// <param name="nameParam"></param>
+        /// <param name="nameTable"></param>
+        /// <returns>Таблицу результаа запроса</returns>
         public static DataTable ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable)
         {
             SqlConnection connection = new SqlConnection(connectionString);

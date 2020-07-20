@@ -26,6 +26,7 @@ namespace BankApplicationsWinForm
         ToolStripLabel infoLabel;
         Timer timer;
         SaveOrLoader saveOrLoader;
+        Bank<Account> bank;
 
         public string _idName;
         public int _userID;
@@ -55,6 +56,7 @@ namespace BankApplicationsWinForm
             _userID = validateForm._userId;
             groupBox1.Text = "Клиент: " + validateForm._name;
 
+            bank = new Bank<Account>("ЮнитБанк");
             saveOrLoader = new SaveOrLoader(this, bank);
             //if (validateForm.ValidTextBox.Text.Equals("Евгений"))
             //{
@@ -130,8 +132,6 @@ namespace BankApplicationsWinForm
             dateLabel.Text = DateTime.Now.ToLongDateString();
             timeLabel.Text = DateTime.Now.ToLongTimeString();
         }
-
-        Bank<Account> bank = new Bank<Account>("ЮнитБанк");
 
         private void bOpen_Click(object sender, EventArgs e)
         {
@@ -278,8 +278,6 @@ namespace BankApplicationsWinForm
 
         #endregion
 
-       
-
         #region Сериализация/Десериализация объеткта Account
 
         private void SaveDocuments(string idName)
@@ -292,9 +290,9 @@ namespace BankApplicationsWinForm
         {
             if(!saveOrLoader.LoadDocuments(idName))
             {
-                throw new Exception("Ошибка загрузки данных");
                 Service.LogWrite("Ошибка загрузки данных");
                 this.button2.Text = "Error";
+                throw new Exception("Ошибка загрузки данных");
             }
             else
             {

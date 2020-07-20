@@ -28,6 +28,11 @@ namespace BankApplicationsWinForm.Models
             this.bank = bank;
         }
 
+        /// <summary>
+        /// Сохранение данных
+        /// </summary>
+        /// <param name="idName"></param>
+        /// <returns></returns>
         public bool SaveDocuments(string idName)
         {
             XmlSerializer formatterDemand = new XmlSerializer(typeof(DemandAccount[]));
@@ -170,7 +175,11 @@ namespace BankApplicationsWinForm.Models
             }
         }
 
-
+        /// <summary>
+        /// Получение данных
+        /// </summary>
+        /// <param name="idName"></param>
+        /// <returns></returns>
         public bool LoadDocuments(string idName)
         {
             XmlSerializer serializerDem = new XmlSerializer(typeof(DemandAccount[]));
@@ -204,7 +213,6 @@ namespace BankApplicationsWinForm.Models
                             else
                             {
                                 MessageBox.Show("Отсутствуют данные по пользователю", "Ошибка входа");
-                                break;
                             }
                         }
                     }
@@ -248,26 +256,38 @@ namespace BankApplicationsWinForm.Models
                             if (!string.IsNullOrEmpty(depositData.ToString()))
                             {
                                 depAcc = serializerDep.Deserialize(depositData) as DepositAccount[];
+                                if (depAcc != null)
+                                {
+                                    Service.LogWrite($"Объект DepositAccount_{idName} загружен");
+                                    loadDeposit = true;
+                                }
                             }
                             else
                             {
                                 MessageBox.Show("Отсутствуют данные по пользователю", "Ошибка входа");
-                                return;
                             }
                         }
                     }
                     else
                     {
                         MessageBox.Show($"Проверьте базу", "Ошибка получения данных");
-                        return;
                     }
 
-                    Service.LogWrite($"Объект DepositAccount_{idName} загружен");
-                    loadDeposit = true;
                 }
                 catch (Exception ex)
                 {
                     Service.LogWrite(ex.Message);
+                }
+
+                if (loadDamand && loadDeposit)
+                {
+                    mainForm._button2.Text = "ОК";
+                    Service.LogWrite("Все объекты успешно загружены");
+                }
+                else
+                {
+                    Service.LogWrite("Ошибка получения данных!");
+                    return false;
                 }
                 #region OldRealozation (загрузка DepositAccounts из xml)
                 //using (var stream = new FileStream($@"{idName}\DepositAccounts_{idName}.xml", FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -316,14 +336,14 @@ namespace BankApplicationsWinForm.Models
                 mainForm._button2.Text = "ОК";
                 Service.LogWrite("Загрзка ОК");
 
-
+                return true;
             }
             catch (Exception exep)
             {
                 Service.LogWrite(exep.Message);
                 mainForm._button2.Text = "Error";
+                return false;
             }
         }
-
     }
 }
