@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ArrayOfDepositAccount xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DepositAccount>
+    <_days>282</_days>
+    <dateTime>2020-07-20T10:13:48.5931391+03:00</dateTime>
+    <Sum>96177.19</Sum>
+    <Percentage>40</Percentage>
+    <Id>1</Id>
+    <Name>Депозитный счёт №1-480</Name>
+  </DepositAccount>
+</ArrayOfDepositAccount>
