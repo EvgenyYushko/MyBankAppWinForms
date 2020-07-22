@@ -17,6 +17,10 @@ namespace BankApplicationsWinForm.Models
     {
         MainForm mainForm;
         Bank<Account> bank;
+        XmlSerializer formatterDemand;
+        XmlSerializer formatterDeposit;
+        List<DemandAccount> demList;
+        List<DepositAccount> depList;
 
         public SaveOrLoader()
         {
@@ -26,6 +30,12 @@ namespace BankApplicationsWinForm.Models
         {
             this.mainForm = mainForm;
             this.bank = bank;
+
+            formatterDemand = new XmlSerializer(typeof(DemandAccount[]));
+            formatterDeposit = new XmlSerializer(typeof(DepositAccount[]));
+
+            demList = new List<DemandAccount>();
+            depList = new List<DepositAccount>();
         }
 
         /// <summary>
@@ -35,40 +45,41 @@ namespace BankApplicationsWinForm.Models
         /// <returns></returns>
         public bool SaveDocuments(string idName)
         {
-            XmlSerializer formatterDemand = new XmlSerializer(typeof(DemandAccount[]));
-            XmlSerializer formatterDeposit = new XmlSerializer(typeof(DepositAccount[]));
-            List<DemandAccount> demList = new List<DemandAccount>();
-            List<DepositAccount> depList = new List<DepositAccount>();
             bool saveDamand = false;
             bool saveDeposit = false;
+
             try
             {
                 try // Сохранение DemandAccount в базу
                 {
-                    DemandAccount s;
-                    foreach (Account item in bank.accounts)
+                    DemandAccount d;
+                    if (bank.accounts != null)
                     {
-                        if (item is DemandAccount)
+                        foreach (Account item in bank.accounts)
                         {
-                            s = item as DemandAccount;
-                            s.dateTime = DateTime.Now;
-                            demList.Add(s);
+                            if (item is DemandAccount)
+                            {
+                                d = item as DemandAccount;
+                                d.dateTime = DateTime.Now;
+                                demList.Add(d);
+                            }
                         }
                     }
+                    else Service.LogWrite($"Отсутсвует аккаунт DemandAccount_{idName}");
 
                     var stringWriter = new StringWriter();
 
                     formatterDemand.Serialize(stringWriter, demList.ToArray());
                     var data = stringWriter.ToString();
 
-                    DataBaseService.ExecUpdate("Login = @Login", "Login", "Евгений", "tbUsers", $"{data}", mainForm._userID, "DemandData");
+                    DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{mainForm._userID}", "tbUsers",  $"SET [DemandData] = '{data}' ");
 
                     Service.LogWrite("Объект DemandAccount сохранён");
                     saveDamand = true;
                 }
-                catch (NullReferenceException nullExep)
+                catch (Exception ex)
                 {
-                    Service.LogWrite($"Нет аккаунта DemandAccount_{idName}! {nullExep.Message}");
+                    Service.LogWrite($"{ex.Message}");
                 }
                 #region OldRealization (Сохранение DemandAccount в xml)
                 //DirectoryInfo dirInfo = new DirectoryInfo($"{_idName}");
@@ -106,30 +117,34 @@ namespace BankApplicationsWinForm.Models
 
                 try // Сохранение DepositAccount в базу
                 {
-                    DepositAccount s;
-                    foreach (Account item in bank.accounts)
+                    DepositAccount d;
+                    if (bank.accounts != null)
                     {
-                        if (item is DepositAccount)
+                        foreach (Account item in bank.accounts)
                         {
-                            s = item as DepositAccount;
-                            s.dateTime = DateTime.Now;
-                            depList.Add(s);
+                            if (item is DepositAccount)
+                            {
+                                d = item as DepositAccount;
+                                d.dateTime = DateTime.Now;
+                                depList.Add(d);
+                            }
                         }
                     }
+                    else Service.LogWrite($"Отсутствует аккаунт DepositAccounts_{idName}");
 
                     var stringWriter = new StringWriter();
 
                     formatterDeposit.Serialize(stringWriter, depList.ToArray());
                     var data = stringWriter.ToString();
 
-                    DataBaseService.ExecUpdate("Login = @Login", "Login", "Евгений", "tbUsers", $"{data}", mainForm._userID, "DepositData");
+                    DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{mainForm._userID}", "tbUsers",  $"SET [DepositData] = '{data}' ");
 
                     Service.LogWrite($"Объект DepositAccounts_{idName} сохранён");
                     saveDeposit = true;
                 }
-                catch (NullReferenceException nullExep)
+                catch (Exception ex)
                 {
-                    Service.LogWrite($"Нет аккаунта DepositAccounts_{idName}! {nullExep.Message}");
+                    Service.LogWrite($"{ex.Message}");
                 }
                 #region OldRealisation (Сохранение DepositAccount в xml)
                 //using (var stream = new FileStream($@"{_fullpath}\DepositAccounts_{idName}.xml", FileMode.Create, FileAccess.Write, FileShare.Read))

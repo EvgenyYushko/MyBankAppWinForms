@@ -19,6 +19,7 @@ namespace BankApplicationsWinForm
         MainForm mainForm;
         Bank<Account> bank;
         AccountEventsArcuments _accountEventsArcuments;
+        AccountType accountType;
 
         public OpenForm()
         {
@@ -36,8 +37,6 @@ namespace BankApplicationsWinForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AccountType accountType;
-
             if (radioButton1.Checked)
                 accountType = AccountType.Ordinary;
             else if (radioButton2.Checked)
@@ -46,7 +45,7 @@ namespace BankApplicationsWinForm
 
             if (accountType != AccountType.EmptyValue)
                 OpenAccount(bank, accountType);
-           
+
             //mainForm.labelDay.Text = bank.CalculatePercentage();
 
             Account[] acc = bank.GetAccunts();
@@ -72,33 +71,6 @@ namespace BankApplicationsWinForm
                 _accountEventsArcuments.OpenAccountHandler); // обработчик открытия счета
 
         }
-
-        //// обработчики событий класса Account
-        //// обработчик открытия счета
-        //private void OpenAccountHandler(object sender, AccountEventArgs e)
-        //{
-        //    Service.LogWrite(e.Message);
-        //    mainForm.LabelInfoProp.Text = e.Message;
-        //}
-        //// обработчик добавления денег на счет
-        //private void AddSumHandler(object sender, AccountEventArgs e)
-        //{
-        //    mainForm.LabelInfoProp.Text = e.Message;
-        //    Service.LogWrite(e.Message);
-        //    mainForm.LabelInfoProp.Text += "\n" + "Общая сумма равна:" + e.Sum;
-        //}
-        //// обработчик вывода средств
-        //private void WithdrawSumHandler(object sender, AccountEventArgs e)
-        //{
-        //    mainForm.LabelInfoProp.Text = e.Message;
-        //    Service.LogWrite(e.Message);
-        //}
-        //// обработчик закрытия счета
-        //private void CloseAccountHandler(object sender, AccountEventArgs e)
-        //{
-        //    mainForm.LabelInfoProp.Text = e.Message;
-        //    Service.LogWrite(e.Message);
-        //}
 
         private void OpenForm_FormClosed(object sender, FormClosedEventArgs e)
         {

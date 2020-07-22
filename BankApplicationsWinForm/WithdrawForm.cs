@@ -13,12 +13,14 @@ namespace BankApplicationsWinForm
 {
     public partial class WithdrawForm : Form
     {
+        MainForm mainForm;
+        Bank<Account> bank;
+
         public WithdrawForm()
         {
             InitializeComponent();
         }
-        MainForm mainForm;
-        Bank<Account> bank;
+
         public WithdrawForm(MainForm mainForm, Bank<Account> bank)
         {
             InitializeComponent();

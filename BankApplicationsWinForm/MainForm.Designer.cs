@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.labelDay = new System.Windows.Forms.Label();
             this.labelInfo = new System.Windows.Forms.Label();
+            this.labelDay = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -55,6 +55,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.журналСобытийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.аккаунтToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -69,17 +71,8 @@
             this.panel1.ForeColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(0, 27);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(413, 53);
+            this.panel1.Size = new System.Drawing.Size(413, 62);
             this.panel1.TabIndex = 0;
-            // 
-            // labelDay
-            // 
-            this.labelDay.AutoSize = true;
-            this.labelDay.Location = new System.Drawing.Point(267, 0);
-            this.labelDay.Name = "labelDay";
-            this.labelDay.Size = new System.Drawing.Size(10, 13);
-            this.labelDay.TabIndex = 2;
-            this.labelDay.Text = ".";
             // 
             // labelInfo
             // 
@@ -91,6 +84,15 @@
             this.labelInfo.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labelInfo.Size = new System.Drawing.Size(0, 25);
             this.labelInfo.TabIndex = 0;
+            // 
+            // labelDay
+            // 
+            this.labelDay.AutoSize = true;
+            this.labelDay.Location = new System.Drawing.Point(267, 0);
+            this.labelDay.Name = "labelDay";
+            this.labelDay.Size = new System.Drawing.Size(10, 13);
+            this.labelDay.TabIndex = 2;
+            this.labelDay.Text = ".";
             // 
             // panel2
             // 
@@ -106,7 +108,7 @@
             this.panel2.Controls.Add(this.bWithdraw);
             this.panel2.Controls.Add(this.bOpen);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 86);
+            this.panel2.Location = new System.Drawing.Point(0, 95);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(413, 174);
             this.panel2.TabIndex = 1;
@@ -316,7 +318,9 @@
             // файлToolStripMenuItem
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.журналСобытийToolStripMenuItem});
+            this.журналСобытийToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.аккаунтToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.файлToolStripMenuItem.Text = "Файл";
@@ -328,11 +332,23 @@
             this.журналСобытийToolStripMenuItem.Text = "Журнал событий";
             this.журналСобытийToolStripMenuItem.Click += new System.EventHandler(this.журналСобытийToolStripMenuItem_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            // 
+            // аккаунтToolStripMenuItem
+            // 
+            this.аккаунтToolStripMenuItem.Name = "аккаунтToolStripMenuItem";
+            this.аккаунтToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.аккаунтToolStripMenuItem.Text = "Аккаунт";
+            this.аккаунтToolStripMenuItem.Click += new System.EventHandler(this.аккаунтToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 260);
+            this.ClientSize = new System.Drawing.Size(413, 269);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
@@ -384,6 +400,8 @@
         private System.Windows.Forms.ToolStripMenuItem журналСобытийToolStripMenuItem;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem аккаунтToolStripMenuItem;
     }
 }
 

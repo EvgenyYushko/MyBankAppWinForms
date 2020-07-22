@@ -1,6 +1,6 @@
 ﻿namespace BankApplicationsWinForm
 {
-    partial class CreateUserForm
+    partial class ViewUserForm
     {
         /// <summary>
         /// Required designer variable.
@@ -19,5 +19,6 @@
             }
             base.Dispose(disposing);
         }
+       
     }
 }

@@ -254,12 +254,12 @@ namespace BankApplicationsWinForm
         private void SaveDocuments(string idName)
         {
             if (!_saveOrLoadable.SaveDocuments(idName))
-                throw new Exception("Ошибка сохранения");
+                Service.LogWrite("Ошибка сохранения данных");
         }
 
         private void LoadDocuments(string idName)
         {
-            if(_saveOrLoadable.LoadDocuments(idName))
+            if (_saveOrLoadable.LoadDocuments(idName))
             {
                 //Присваивание обработчиков для аккаунтов если они были десиреализованы
                 bank.Open(_accountEventsArcuments.AddSumHandler, _accountEventsArcuments.WithdrawSumHandler,
@@ -269,10 +269,16 @@ namespace BankApplicationsWinForm
             {
                 Service.LogWrite("Ошибка загрузки данных");
                 this.button2.Text = "Error";
-                throw new Exception("Ошибка загрузки данных");
+                //throw new Exception("Ошибка загрузки данных");
             }
         }
         #endregion
+
+        private void аккаунтToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ViewUserForm viewUserForm = new ViewUserForm(this);
+            viewUserForm.Show();
+        }
     }
 
 }

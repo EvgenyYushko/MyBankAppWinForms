@@ -13,29 +13,29 @@ using System.Xml.Serialization;
 
 namespace BankApplicationsWinForm
 {
-    public partial class CreateUserForm : Form
+    public partial class CreateUserForm : UserForm
     {
-        //List<User> userList;
-        //User user;
-
-        public CreateUserForm()
+        public CreateUserForm(Form inputForm) :
+            base(inputForm)
         {
-            InitializeComponent();
-            //userList = new List<User>();
+            base.Text = "Регистарция";
+            base._tbOk.Text = "Создать профиль";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        override public void btOK_Click(object sender, EventArgs e)
         {
-            if (textBox3.Text != textBox4.Text)
+            if (_tbPassword.Text != _tbReapidPassword.Text)
                 MessageBox.Show("Пароли не совпадают", "Внимание!");
             else
             {
-                var FIO = textBox2.Text + " " + textBox1.Text;
-                var password = textBox4.Text;
-                var login = textBox5.Text;
+                var FName = _tbName.Text;
+                var LName = _tbLName.Text;
+                var password = _tbReapidPassword.Text;
+                var login = _tbLogin.Text;
+                bool gender = _cbGender.SelectedIndex == 1 ? true : false;
 
                 //Новая реализация сохранения в базу
-                string sqlExpression = $"INSERT tbUsers VALUES ('{FIO}', 'true', NULL, '{password}', '{login}')";
+                string sqlExpression = $"INSERT tbUsers VALUES ('{gender}', NULL, '{password}', '{login}', NULL, NULL, '{FName}', '{LName}' )";
                 if (!DataBaseService.ExecInsert(sqlExpression))
                 {
                     Service.LogWrite($"Ошибка добавления данных в базу: ");
@@ -77,50 +77,10 @@ namespace BankApplicationsWinForm
                 //MessageBox.Show($"Аккаунт {user.Name} создан."); 
                 #endregion
 
-                this.Close();
-            }
-        }
-
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
-        {   //вводим только буквы
-            char letter = e.KeyChar;
-            if (!Char.IsLetter(letter))
-            {
-                e.Handled = true;
+                Close();
             }
         }
     }
-    #region OldRealization
-    //[Serializable]
-    //public class User
-    //{
-    //    private string name;
-    //    private string fio;
-    //    private string password;
-
-    //    public string Name
-    //    {
-    //        get { return name; }
-    //        set { name = value; }
-    //    }
-
-    //    public string Fio
-    //    {
-    //        get { return fio; }
-    //        set { fio = value; }
-    //    }
-
-    //    public string Password
-    //    {
-    //        get { return password; }
-    //        set { password = value; }
-    //    }
-
-    //    public User()
-    //    {
-    //    } 
-    //}
-        #endregion
 }
 
 

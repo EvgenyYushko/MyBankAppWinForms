@@ -17,7 +17,7 @@ namespace BankApplicationsWinForm
     public partial class ValidateForm : Form
     {
         MainForm mainFrom;
-        CreateUserForm createUserForm;
+        UserForm createUserForm;
         //public User user;
         public string _name;
         public int _userId;
@@ -125,7 +125,7 @@ namespace BankApplicationsWinForm
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            this.createUserForm = new CreateUserForm();
+            this.createUserForm = new CreateUserForm(this);
             createUserForm.Show();
         }
 
@@ -148,7 +148,7 @@ namespace BankApplicationsWinForm
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {   //вводим только буквы
             char letter = e.KeyChar;
-            if (!Char.IsLetter(letter))
+            if (!Char.IsLetter(letter) && letter != 8 )
             {
                 e.Handled = true;
             }

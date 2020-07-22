@@ -26,13 +26,13 @@ namespace BankApplicationsWinForm.Services
         /// <param name="userId"></param>
         /// <param name="nameColumn">Имя столбца</param>
         /// <returns></returns>
-        public static bool ExecUpdate(string sqlConditions, string sqlParam, string nameParam, string nameTable, string data, int userId, string nameColumn)
+        public static bool ExecUpdate(string sqlConditions, string sqlParam, string nameParam, string nameTable,  string setConditions)
         {
             var dt = ExecSelect($"SELECT * FROM {nameTable}", sqlConditions, sqlParam, nameParam, nameTable);
 
             if (dt.Rows.Count != 0)
             {
-                string sqlExpression = $"UPDATE {nameTable} SET [{nameColumn}] = '{data}' WHERE User_ID = {userId}";
+                string sqlExpression = $"UPDATE {nameTable} {setConditions} WHERE User_ID = {nameParam}";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {

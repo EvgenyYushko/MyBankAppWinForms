@@ -19,7 +19,6 @@ E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Relea
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Release\BankApplicationsWinForm.pdb
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Release\BankLibrary.dll
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\bin\Release\BankLibrary.pdb
-E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.csprojResolveAssemblyReference.cache
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.CreateUserForm.resources
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.MainForm.resources
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.OpenForm.resources
