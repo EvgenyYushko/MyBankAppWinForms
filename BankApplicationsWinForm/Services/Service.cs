@@ -27,5 +27,15 @@ namespace BankApplicationsWinForm
                 sw.WriteLine("[" + DateTime.Now.ToString() + "] " + msg);
             }
         }
+
+        /// <summary>
+        /// Преобразует StringBuilder в string
+        /// </summary>
+        /// <param name="stringBuilder"></param>
+        /// <returns></returns>
+        public static string ToStringFormated(this StringBuilder stringBuilder)
+        {
+            return stringBuilder.ToString().TrimEnd('\n', '\r');
+        }
     }
 }

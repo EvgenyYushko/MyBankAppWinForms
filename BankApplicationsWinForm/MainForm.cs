@@ -61,16 +61,8 @@ namespace BankApplicationsWinForm
             bank = new Bank<Account>("ЮнитБанк");
 
             _saveOrLoadable = new SaveOrLoader(this, bank);
-            //if (validateForm.ValidTextBox.Text.Equals("Евгений"))
-            //{
-            //_id = 1;
+          
             LoadDocuments($"{validateForm._name}");
-            //}
-            //if (validateForm.ValidTextBox.Text.Equals("Вика"))
-            //{
-            //    _id = 2;
-            //    LoadDocuments(_id);
-            //}
         }
 
         #region Свойства для доступа к полям MainForm
@@ -164,20 +156,11 @@ namespace BankApplicationsWinForm
             }
             else return;
 
-            //mainForm.labelDay.Text += bank.CalculatePercentage();
-            //mainForm.LabelInfoProp.ForeColor = Color.YellowGreen;
-            //mainForm.LabelInfoProp.Text = "Счёт закрыт";
             Panel.BackColor = Color.Red;
             Panel.ForeColor = Color.Black;
 
-            //this.Close();
             Service.Refresh(this);
             UpdateInfo();
-
-            //
-            //CloseForm closeForm = new CloseForm(this, bank);
-            //closeForm.Show();
-            //bank.CalculatePercentage();
         }
 
         private void CloseAccount(Bank<Account> bank, int id)

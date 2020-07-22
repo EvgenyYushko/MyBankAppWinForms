@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using BankApplicationsWinForm.Services;
+using BankApplicationsWinForm.Interfaces.Cheaper;
 
 namespace BankApplicationsWinForm
 {
@@ -18,17 +19,14 @@ namespace BankApplicationsWinForm
     {
         MainForm mainFrom;
         UserForm createUserForm;
-        //public User user;
         public string _name;
         public int _userId;
-        //List<User> listUser;
 
         public ValidateForm()
         {
             InitializeComponent();
             Invalidate();
             textBox1.Text = "Евгений"; //временно для удобства пользования
-            //listUser = new List<User>();
             //задание условий для прогрес бара
             timer1.Interval = 100;
             timer1.Enabled = false;
@@ -37,9 +35,6 @@ namespace BankApplicationsWinForm
             progressBar1.Maximum = 100;
             progressBar1.Value = 0;
         }
-
-        //public string _name = "Евгений";
-        //string _pas = "1";
 
         public TextBox ValidTextBox
         {
@@ -57,8 +52,11 @@ namespace BankApplicationsWinForm
                 foreach (DataRow row in dt.Rows)
                 {
                     var login = row["Login"];
-                    var password = row["Password"];
                     var userId = row["User_ID"];
+
+                    IDeCheaper deCheaper = new XORCipher();
+                    var cheapPas = (string)row["Password"];
+                    var password = deCheaper.Decrypt(cheapPas);
 
                     if (textBox2.Text.Equals(password))
                     {

@@ -59,6 +59,12 @@
     <Compile Include="CreateUserForm.Designer.cs">
       <DependentUpon>CreateUserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\Cheaper\IDeCheaper.cs" />
+    <Compile Include="Interfaces\Cheaper\ICheaper.cs" />
+    <Compile Include="Interfaces\IMustBeEntered.cs" />
+    <Compile Include="Services\GlobalData.cs" />
+    <Compile Include="Services\MustBeEnteredVerification.cs" />
+    <Compile Include="Services\XORCipher.cs" />
     <Compile Include="ViewUserForm .cs">
       <SubType>Form</SubType>
     </Compile>
