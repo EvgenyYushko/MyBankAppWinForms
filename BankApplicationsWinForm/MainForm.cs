@@ -215,6 +215,13 @@ namespace BankApplicationsWinForm
         {
             SaveDocuments(_idName);
             validateForm.Close();
+
+            DirectoryInfo dirInfo = new DirectoryInfo($"cash");
+            var s = dirInfo.FullName;
+            foreach (FileInfo f in dirInfo.GetFiles())
+            {
+                f.Delete();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

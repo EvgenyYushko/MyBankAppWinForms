@@ -30,3 +30,5 @@ E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Relea
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.csproj.GenerateResource.Cache
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.exe
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.pdb
+E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.ViewUserForm.resources
+E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.UserForm.resources

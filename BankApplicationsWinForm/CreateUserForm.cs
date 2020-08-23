@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,6 +17,8 @@ namespace BankApplicationsWinForm
 {
     public partial class CreateUserForm : UserForm
     {
+       
+
         public CreateUserForm(Form inputForm) :
             base(inputForm)
         {
@@ -22,7 +26,7 @@ namespace BankApplicationsWinForm
             base._tbOk.Text = "Создать профиль";
         }
 
-        override public bool SaveOrInsertIntoDB()
+        override public bool SaveData()
         {
             string sqlExpression = $"INSERT tbUsers VALUES ('{_gender}', '{_dataOfBirthStr}', '{_password}', '{_login}', NULL, NULL, '{_FName}', '{_LName}' )";
 

@@ -3,7 +3,9 @@ using BankApplicationsWinForm.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -26,7 +28,7 @@ namespace BankApplicationsWinForm
             deCheaper = new XORCipher();
         }
 
-        public override bool SaveOrInsertIntoDB()
+        public override bool SaveData()
         {
             return DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{((MainForm)base._form)._userID}", "tbUsers",
                 $"SET [Gender] = '{_gender}', [FName] = '{_FName}', [LName] = '{_LName}', [Password] = '{_password}', [Login] = '{_login}', [DateOfBirth] = '{_dataOfBirthStr}' ");
@@ -49,11 +51,11 @@ namespace BankApplicationsWinForm
                 var cheapPas = (string)row["Password"];
                 var password = deCheaper.Decrypt(cheapPas);
 
-                if (!SaveOrInsertIntoDB())
-                {
-                    Service.LogWrite($"Ошибка добавления/обновления данных в базу: ");
-                    throw new Exception("Ошибка добавления/обновления данных в базу");
-                }
+                //if (!SaveOrInsertIntoDB())
+                //{
+                //    Service.LogWrite($"Ошибка добавления/обновления данных в базу: ");
+                //    throw new Exception("Ошибка добавления/обновления данных в базу");
+                //}
 
                 this._tbName.Text = FName;
                 this._tbLName.Text = LName;
@@ -61,7 +63,56 @@ namespace BankApplicationsWinForm
                 this._tbLogin.Text = login;
                 this._cbGender.SelectedIndex = gender ? 1 : 0;
                 this._dataOfBirth.Value = dataOfBirth;
+
+                ReadAsuncImage();
+                
             }
+
+        }
+
+        public async void ReadAsuncImage()
+        {
+            DataTable dt = DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbFiles");
+
+            if (dt.Rows.Count == 0)
+                return;
+
+            DataRow row = dt.Rows[0];
+            var image = (byte[])row["Image"];
+
+            if (dt.Rows.Count != 0)
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo($"Cash");
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                var fullName = dirInfo.FullName;
+                var path = $"{fullName}\\image.jpg";
+                try
+                {
+                    using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                    {
+                        await fs.WriteAsync(image, 0, image.Length);
+                    }
+                }
+                catch 
+                {
+                    var exist = File.Exists(path);
+                    if (exist)
+                    {
+                        path = $"{fullName}\\{DateTime.Now:yyyyMMddHHmmss}_view_image.jpg";
+                    }
+
+                    using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                    {
+                        await fs.WriteAsync(image, 0, image.Length);
+                    }
+                }
+                
+                _pictureBox1.Image = Image.FromFile(path);
+            }
+
         }
     }
     #region OldRealization

@@ -146,10 +146,21 @@ namespace BankApplicationsWinForm
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {   //вводим только буквы
             char letter = e.KeyChar;
-            if (!Char.IsLetter(letter) && letter != 8 )
+            if (!Char.IsLetter(letter) && letter != 8)
             {
                 e.Handled = true;
             }
+        }
+
+        private void ValidateForm_Load(object sender, EventArgs e)
+        {
+            // Создавать базу если её нету.
+
+            //string chekDB = Properties.Resources.CheckCreateDB;
+            string con = @"Data Source=.\SQLEXPRESS;Initial Catalog=master;Integrated Security=True"; // вынести в ресурсы
+
+            if (!DataBaseService.CheckCreateDB(con))
+                throw new Exception("Ошибка создания БД!");
         }
     }
 }

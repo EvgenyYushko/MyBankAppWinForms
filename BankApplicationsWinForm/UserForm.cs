@@ -4,8 +4,11 @@ using BankApplicationsWinForm.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,9 +27,23 @@ namespace BankApplicationsWinForm
         protected string _login;
         protected bool _gender;
         protected string _dataOfBirthStr;
+        string _fullFileName;
+        protected int _User_ID;
+        protected byte[] _imageData;
+        private int myVar;
+        bool _resultSaveImage;
+
+        protected PictureBox _pictureBox1
+        {
+            get { return pictureBox1; }
+            set { pictureBox1 = value; }
+        }
+
+
         IMustBeEntered _mustBeEntered;
         ICheaper _cheaper;
         string _fieldsText;
+        Timer timer;
 
         public UserForm(Form inputForm)
         {
@@ -41,6 +58,9 @@ namespace BankApplicationsWinForm
 
             _mustBeEntered = new MustBeEnteredVerification(this);
             _cheaper = new XORCipher();
+
+            if (this._form is MainForm)
+                _User_ID = ((MainForm)this._form)._userID;
         }
 
         #region Properties
@@ -106,17 +126,77 @@ namespace BankApplicationsWinForm
                 _dataOfBirthStr = _dataOfBirth.Value.ToShortDateString();
                 _password = _cheaper.Encrypt(_tbReapidPassword.Text);
 
-                if (!SaveOrInsertIntoDB())
+                if (!SaveData())
                 {
                     Service.LogWrite($"Ошибка добавления/обновления данных в базу: ");
                     throw new Exception("Ошибка добавления/обновления данных в базу");
                 }
 
+                if (!SaveImage())
+                {
+                    Service.LogWrite($"Ошибка добавления/обновления изображения в базу: ");
+                    throw new Exception("Ошибка добавления/обновления изображения в базу");
+                }
+
                 Close();
+                _form.Activate();
             }
         }
 
-        public virtual bool SaveOrInsertIntoDB() => false;
+        private bool SaveImage()
+        {
+            if (_imageData != null)
+            {
+                // Костыль
+                var dtu = DataBaseService.ExecSelect("SELECT TOP 1 * FROM tbUsers ORDER BY [User_ID] DESC", "tbUsers");
+                if (dtu.Rows.Count > 0)
+                {
+                    DataRow row = dtu.Rows[0];
+
+                    var User_ID = (int)row["User_ID"];
+                    _User_ID = User_ID;
+                }
+
+                var dt = DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{ _User_ID}", "tbFiles");
+                if (dt.Rows.Count > 0)
+                {
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                    {
+                        connection.Open();
+                        SqlCommand command = new SqlCommand();
+                        command.Connection = connection;
+                        command.CommandText = @"UPDATE tbFiles SET Image = @ImageData WHERE User_ID = @User_ID";
+                        command.Parameters.Add("@User_ID", SqlDbType.NVarChar, 1000);
+                        command.Parameters.Add("@ImageData", SqlDbType.Image, 1000000000);
+
+                        command.Parameters["@User_ID"].Value = _User_ID;
+                        command.Parameters["@ImageData"].Value = _imageData;
+
+                        return command.ExecuteNonQuery() == 1 ? true : false;
+                    }
+                }
+                else
+                {
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+                    {
+                        connection.Open();
+                        SqlCommand command = new SqlCommand();
+                        command.Connection = connection;
+                        command.CommandText = @"INSERT INTO tbFiles VALUES (@User_ID, @ImageData)";
+                        command.Parameters.Add("@User_ID", SqlDbType.NVarChar, 50);
+                        command.Parameters.Add("@ImageData", SqlDbType.Image, 1000000000);
+
+                        command.Parameters["@User_ID"].Value = _User_ID;
+                        command.Parameters["@ImageData"].Value = _imageData;
+
+                        return command.ExecuteNonQuery() == 1 ? true : false;
+                    }
+                }
+            }
+            else return true;
+        }
+
+        public virtual bool SaveData() => false;
 
         private void tbName_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -134,6 +214,88 @@ namespace BankApplicationsWinForm
 
         public virtual void userForm_Load(object sender, EventArgs e)
         {
+        }
+
+        private void pictureBox1_MouseHover(object sender, EventArgs e)
+        {
+            this.btLoadImage.Visible = true;
+            this.btClose.Visible = true;
+        }
+
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            timer = new Timer() { Interval = 500 };
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            this.btLoadImage.Visible = false;
+            this.btClose.Visible = false;
+            timer.Stop();
+        }
+
+        private void btLoadImage_MouseHover(object sender, EventArgs e)
+        {
+            timer.Stop();
+            this.btLoadImage.Visible = true;
+            this.btClose.Visible = true;
+        }
+
+        private void btClose_MouseHover(object sender, EventArgs e)
+        {
+            timer.Stop();
+            this.btLoadImage.Visible = true;
+            this.btClose.Visible = true;
+        }
+
+        private void btLoadImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Изображения |*.jpg;*.jpeg;";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.DialogResult = DialogResult.OK;
+                _fullFileName = openFileDialog.FileName;
+
+                FileInfo file = new FileInfo(_fullFileName);
+                if (file.Length > 20971520)
+                {
+                    Service.LogWrite($"Файл {_fullFileName} слишком большой, и не может быть загружен в базу!");
+                    throw new Exception($"Файл {_fullFileName} слишком большой, и не может быть загружен в базу!");
+                }
+
+                using (FileStream fs = new FileStream(_fullFileName, FileMode.Open))
+                {
+                    _imageData = new byte[fs.Length];
+                    fs.Read(_imageData, 0, _imageData.Length);
+                }
+                
+                pictureBox1.Image = Image.FromFile(_fullFileName);
+            }
+            else
+            {
+                this.DialogResult = DialogResult.Cancel;
+            }
+        }
+
+        private void btClose_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = null;// RemovePropertyItem(1);
+
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.CommandText = @"DELETE tbFiles WHERE User_ID = @User_ID";
+                command.Parameters.Add("@User_ID", SqlDbType.NVarChar, 50);
+
+                command.Parameters["@User_ID"].Value = _User_ID;
+
+                command.ExecuteNonQuery();
+            }
         }
     }
     #region OldRealization
