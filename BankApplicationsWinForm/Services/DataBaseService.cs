@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,10 @@ namespace BankApplicationsWinForm.Services
                 }
                 else Service.LogWrite("БД BankApp не сущесвует!");
 
-                // TODO: Сделать проверку на наличие папки создания ДБ - папки нету - ОШИБКА! 
+                DirectoryInfo dirInfo = new DirectoryInfo(@"C:\SQL INSTAL\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\");
+                if (!dirInfo.Exists)
+                    dirInfo.Create();
+
                 var str = "CREATE DATABASE [BankApp] CONTAINMENT = NONE  ON PRIMARY " +
                     "(NAME = N'BankApp', " +
                     "FILENAME = 'C:\\SQL INSTAL\\Microsoft SQL Server\\MSSQL12.SQLEXPRESS\\MSSQL\\DATA\\BankApp.mdf' , " +
