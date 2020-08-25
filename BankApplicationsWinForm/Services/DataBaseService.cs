@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankApplicationsWinForm.Properties;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -39,14 +40,7 @@ namespace BankApplicationsWinForm.Services
                 if (!dirInfo.Exists)
                     dirInfo.Create();
 
-                var str = "CREATE DATABASE [BankApp] CONTAINMENT = NONE  ON PRIMARY " +
-                    "(NAME = N'BankApp', " +
-                    "FILENAME = 'C:\\SQL INSTAL\\Microsoft SQL Server\\MSSQL12.SQLEXPRESS\\MSSQL\\DATA\\BankApp.mdf' , " +
-                    "SIZE = 29888KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB ) " +
-                    "LOG ON (NAME = N'BankApp_log', FILENAME = 'C:\\SQL INSTAL\\Microsoft SQL Server\\MSSQL12.SQLEXPRESS\\MSSQL\\DATA\\BankApp_log.ldf' , " +
-                    "SIZE = 48384KB , " +
-                    "MAXSIZE = 2048GB , " +
-                    "FILEGROWTH = 10 %)";
+                var str = Resources.CheckCreateDB;
 
                 connection.Open();
 
@@ -62,35 +56,8 @@ namespace BankApplicationsWinForm.Services
                     connection.Close();
 
                     SqlConnection con = new SqlConnection(connectionString);
-                    string query =
-                    @"CREATE TABLE [dbo].[tbUsers](
-	                        [User_ID] [int] IDENTITY(1,1) NOT NULL,
-	                        [Gender] [bit] NULL,
-	                        [DateOfBirth] [datetime] NULL,
-	                        [Password] [varchar](max) NOT NULL,
-	                        [Login] [varchar](50) NOT NULL,
-	                        [DemandData] [varchar](max) NULL,
-	                        [DepositData] [varchar](max) NULL,
-	                        [FName] [varchar](50) NOT NULL DEFAULT (''),
-	                        [LName] [varchar](50) NOT NULL DEFAULT (''),
-                        PRIMARY KEY CLUSTERED 
-                        (
-	                        [User_ID] ASC
-                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
-                        CREATE TABLE [dbo].[tbFiles](
-	                        [ID] [int] IDENTITY(1,1) NOT NULL,
-	                        [User_ID] [int] NOT NULL,
-	                        [Image] [varbinary](max) NULL,
-                        PRIMARY KEY CLUSTERED 
-                        (
-	                        [ID] ASC
-                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
-                        ALTER TABLE [dbo].[tbFiles]  WITH CHECK ADD  CONSTRAINT [FK_tbFiles_tbUsers] FOREIGN KEY([User_ID])
-                        REFERENCES [dbo].[tbUsers] ([User_ID])";
+                    
+                    string query = Resources.CreateTables;
 
                     SqlCommand cmd = new SqlCommand(query, con);
                     try

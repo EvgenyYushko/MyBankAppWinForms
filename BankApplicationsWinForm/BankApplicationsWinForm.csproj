@@ -174,5 +174,8 @@
   <ItemGroup>
     <None Include="Resources\CheckCreateDB.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateTables.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

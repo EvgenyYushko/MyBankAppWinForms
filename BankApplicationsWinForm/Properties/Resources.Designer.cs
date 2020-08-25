@@ -61,26 +61,40 @@ namespace BankApplicationsWinForm.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на USE master
-        ///GO
-        ///IF (
-        ///	 (SELECT COUNT(*) 
-        ///	  FROM sys.databases 
-        ///	  WHERE name = &apos;BankApp&apos;) &gt; 0
-        ///   )
-        ///BEGIN
-        ///	USE BankApp
-        ///END
-        ///ELSE
-        ///BEGIN
-        ///	CREATE DATABASE BankApp
-        ///	USE BankApp
-        ///END
-        ///GO.
+        ///   Ищет локализованную строку, похожую на CREATE DATABASE [BankApp]
+        /// CONTAINMENT = NONE
+        /// ON  PRIMARY 
+        ///( NAME = N&apos;BankApp&apos;, FILENAME = N&apos;C:\SQL INSTAL\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\BankApp.mdf&apos; , SIZE = 63680KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+        /// LOG ON 
+        ///( NAME = N&apos;BankApp_log&apos;, FILENAME = N&apos;C:\SQL INSTAL\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\BankApp_log.ldf&apos; , SIZE = 48384KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+        ///
+        ///.
         /// </summary>
         internal static string CheckCreateDB {
             get {
                 return ResourceManager.GetString("CheckCreateDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на CREATE TABLE [dbo].[tbUsers](
+        ///	[User_ID] [int] IDENTITY(1,1) NOT NULL,
+        ///	[Gender] [bit] NULL,
+        ///	[DateOfBirth] [datetime] NULL,
+        ///	[Password] [varchar](max) NOT NULL,
+        ///	[Login] [varchar](50) NOT NULL,
+        ///	[DemandData] [varchar](max) NULL,
+        ///	[DepositData] [varchar](max) NULL,
+        ///	[FName] [varchar](50) NOT NULL DEFAULT (&apos;&apos;),
+        ///	[LName] [varchar](50) NOT NULL DEFAULT (&apos;&apos;),
+        ///PRIMARY KEY CLUSTERED 
+        ///(
+        ///	[User_ID] ASC
+        ///)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALL [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string CreateTables {
+            get {
+                return ResourceManager.GetString("CreateTables", resourceCulture);
             }
         }
     }
