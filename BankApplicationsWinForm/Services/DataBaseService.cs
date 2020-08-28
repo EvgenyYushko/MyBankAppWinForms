@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,61 +21,37 @@ namespace BankApplicationsWinForm.Services
         /// <summary>
         /// Создать БД если она отсутствует
         /// </summary>
-        /// <param name="script"></param>
         /// <param name="conStr"></param>
         /// <returns></returns>
-        public static bool CheckCreateDB(string conStr)
+        public async static Task<bool> CheckCreateDB(string conStr)
         {
-            using (SqlConnection connection = new SqlConnection(conStr))
-            {
-                var dt = ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", conStr);
+            bool isExistsDB = false, isExistsDBTables = false;
 
-                if (dt.Rows.Count > 0)
+            try
+            {
+                var db = await ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", conStr);
+
+                if (db)
                 {
                     Service.LogWrite("БД BankApp найдена!");
-                    return true;
+                    isExistsDB = true;
                 }
                 else Service.LogWrite("БД BankApp не сущесвует!");
 
-                DirectoryInfo dirInfo = new DirectoryInfo(@"C:\SQL INSTAL\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\");
-                if (!dirInfo.Exists)
-                    dirInfo.Create();
-
-                var str = Resources.CheckCreateDB;
-
-                connection.Open();
-
-                SqlCommand command = new SqlCommand(str, connection);
-
-                command.ExecuteNonQuery();
-
-                dt = ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", conStr);
-
-                if (dt.Rows.Count > 0)
+                if (!isExistsDB)
                 {
-                    Service.LogWrite("БД BankApp успешно создана");
-                    connection.Close();
+                    isExistsDB = await CreateDB(conStr);
+                }
 
-                    SqlConnection con = new SqlConnection(connectionString);
-                    
-                    string query = Resources.CreateTables;
+                if (isExistsDB)
+                {
+                    // сделать асинх
+                    var tbUsers = ExecSelect($"SELECT * FROM tbUsers", "tbUsers") == null ? false : true;
+                    var tbFiles = ExecSelect($"SELECT * FROM tbFiles", "tbFiles") == null ? false : true;
+                    isExistsDBTables = tbUsers && tbFiles;
 
-                    SqlCommand cmd = new SqlCommand(query, con);
-                    try
-                    {
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (SqlException e)
-                    {
-                        Service.LogWrite("Ошибка создания таблиц в БД BankApp - " + e.Message);
-                    }
-                    finally
-                    {
-                        con.Close();
-                    }
-                    Service.LogWrite("БД BankApp заполнена таблицами, всё ОК!");
-                    return true;
+                    if (!isExistsDBTables)
+                        isExistsDBTables = await CreateTables();
                 }
                 else
                 {
@@ -82,38 +59,89 @@ namespace BankApplicationsWinForm.Services
                     return false;
                 }
             }
+            catch (Exception e)
+            {
+                Service.LogWrite("Ошибка создания БД или таблиц!" + $"{e.Message.ToString()}");
+            }
+
+            return isExistsDB && isExistsDBTables;
         }
 
-        public static DataTable ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable, string castumConnectionString)
+        private async static Task<bool> CreateTables()
         {
-            SqlConnection connection = new SqlConnection(castumConnectionString);
-            SqlDataAdapter da;
+            SqlConnection connection = new SqlConnection(connectionString);
+            string query = Resources.CreateTables;
+            SqlCommand command = new SqlCommand(query, connection);
 
-            DataSet tempDataset = new DataSet("temp");
             try
             {
-                connection.Open();
-                da = new SqlDataAdapter();
+                await connection.OpenAsync();
+                command.Transaction = connection.BeginTransaction();
 
-                string sqlExpression = sqlSelect + $" WHERE {sqlConditions}";
-
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.Parameters.AddWithValue(sqlParam, nameParam);   // добавление параметра в коллекцию параметров команды
-                da.SelectCommand = command;
-
-                da.Fill(tempDataset, nameTable);
+                await command.ExecuteNonQueryAsync();
+                
+                command.Transaction.Commit();
             }
             catch (Exception e)
             {
-                Service.LogWrite($"Нет доступа к данным! Проверьте настройки! : {e.ToString()}");
-                return null;
+                Service.LogWrite("Ошибка создания таблиц в БД BankApp - " + e.Message);
+                command.Transaction.Rollback();
+                return false;
             }
             finally
             {
                 connection.Close();
             }
-            return tempDataset.Tables[nameTable];
 
+            Service.LogWrite("БД BankApp заполнена таблицами, всё ОК!");
+            return true;
+        }
+
+        private async static Task<bool> CreateDB(string conStr)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(@"C:\SQL INSTAL\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\");
+            if (!dirInfo.Exists)
+                dirInfo.Create();
+
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                var str = Resources.CheckCreateDB;
+                SqlCommand command = new SqlCommand(str, connection);
+
+                await connection.OpenAsync();
+
+                await command.ExecuteNonQueryAsync();
+            }
+
+            var db = await ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", conStr);
+
+            if (db)
+            {
+                Service.LogWrite("БД BankApp успешно создана");
+                return true;
+            }
+
+            return false;
+        }
+
+        public async static Task<bool> ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable, string castumConnectionString)
+        {
+            bool result;
+            using (SqlConnection connection = new SqlConnection(castumConnectionString))
+            {
+                string sqlExpression = sqlSelect + $" WHERE {sqlConditions}";
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                SqlDataReader reader = null;
+
+                await connection.OpenAsync();
+
+                command.Parameters.AddWithValue(sqlParam, nameParam);   // добавление параметра в коллекцию параметров команды
+                reader = await command.ExecuteReaderAsync();
+                result = reader.HasRows;
+                reader.Close();
+
+                return result;
+            }
         }
 
         /// <summary>
@@ -123,9 +151,6 @@ namespace BankApplicationsWinForm.Services
         /// <param name="sqlParam">"Login"</param>
         /// <param name="nameParam">"Евгений"</param>
         /// <param name="nameTable">Имя таблицы "tbUsers"</param>
-        /// <param name="data">Данные для сохранения</param>
-        /// <param name="userId"></param>
-        /// <param name="nameColumn">Имя столбца</param>
         /// <returns></returns>
         public static bool ExecUpdate(string sqlConditions, string sqlParam, string nameParam, string nameTable, string setConditions)
         {

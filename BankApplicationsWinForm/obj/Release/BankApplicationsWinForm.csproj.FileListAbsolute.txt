@@ -32,3 +32,4 @@ E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Relea
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.pdb
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.ViewUserForm.resources
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.UserForm.resources
+E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Release\BankApplicationsWinForm.csprojResolveAssemblyReference.cache

@@ -21,6 +21,7 @@ namespace BankApplicationsWinForm
         UserForm createUserForm;
         public string _name;
         public int _userId;
+        bool _isLoad = false;
 
         public ValidateForm()
         {
@@ -42,9 +43,12 @@ namespace BankApplicationsWinForm
             set { textBox1 = value; }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btOK_Click(object sender, EventArgs e)
         {
             // Новая реализация
+            if (!_isLoad)
+                throw new Exception("Отсутствует подключение к БД! Обратитесь к администратор!");
+
             var dt = DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{textBox1.Text}", "tbUsers");
 
             if (dt.Rows.Count != 0)
@@ -123,6 +127,9 @@ namespace BankApplicationsWinForm
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            if (!_isLoad)
+                throw new Exception("Отсутствует подключение к БД! Обратитесь к администратор!");
+
             this.createUserForm = new CreateUserForm(this);
             createUserForm.Show();
         }
@@ -152,15 +159,27 @@ namespace BankApplicationsWinForm
             }
         }
 
-        private void ValidateForm_Load(object sender, EventArgs e)
+        private async void ValidateForm_Load(object sender, EventArgs e)
         {
             // Создавать базу если её нету.
 
             //string chekDB = Properties.Resources.CheckCreateDB;
             string con = @"Data Source=.\SQLEXPRESS;Initial Catalog=master;Integrated Security=True"; // вынести в ресурсы
 
-            if (!DataBaseService.CheckCreateDB(con))
-                throw new Exception("Ошибка создания БД!");
+            Cursor = Cursors.WaitCursor;
+            try
+            {
+                if (!await DataBaseService.CheckCreateDB(con))
+                {
+                    Service.LogWrite("В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!");
+                    throw new Exception("В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!");
+                }
+                else _isLoad = true;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
     }
 }
