@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using BankApplicationsWinForm.Services;
 using BankApplicationsWinForm.Interfaces.Cheaper;
+using BankApplicationsWinForm.Exceptions;
 
 namespace BankApplicationsWinForm
 {
@@ -120,7 +121,7 @@ namespace BankApplicationsWinForm
             #endregion
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -171,8 +172,7 @@ namespace BankApplicationsWinForm
             {
                 if (!await DataBaseService.CheckCreateDB(con))
                 {
-                    Service.LogWrite("В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!");
-                    throw new Exception("В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!");
+                    throw new BankException("В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!");
                 }
                 else _isLoad = true;
             }

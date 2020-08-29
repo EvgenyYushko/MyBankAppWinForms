@@ -34,7 +34,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.btOK = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.progressBar1 = new BankApplicationsWinForm.Controls.MyProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -84,15 +84,15 @@
             this.btOK.UseVisualStyleBackColor = true;
             this.btOK.Click += new System.EventHandler(this.btOK_Click);
             // 
-            // button2
+            // btCancel
             // 
-            this.button2.Location = new System.Drawing.Point(121, 56);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btCancel.Location = new System.Drawing.Point(121, 56);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 3;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
             // linkLabel1
             // 
@@ -130,7 +130,7 @@
             this.ClientSize = new System.Drawing.Size(212, 101);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -155,7 +155,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button btOK;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private BankApplicationsWinForm.Controls.MyProgressBar progressBar1;
         private System.Windows.Forms.Timer timer1;

@@ -59,6 +59,7 @@
     <Compile Include="CreateUserForm.Designer.cs">
       <DependentUpon>CreateUserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\BankException.cs" />
     <Compile Include="Interfaces\Cheaper\IDeCheaper.cs" />
     <Compile Include="Interfaces\Cheaper\ICheaper.cs" />
     <Compile Include="Interfaces\IMustBeEntered.cs" />
@@ -177,5 +178,6 @@
   <ItemGroup>
     <None Include="Resources\CreateTables.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
