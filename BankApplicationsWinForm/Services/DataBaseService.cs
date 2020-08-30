@@ -16,20 +16,19 @@ namespace BankApplicationsWinForm.Services
     public static class DataBaseService
     {
         // получаем строку подключения
-        static string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        static string _connectionDefaultStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        static string _connectionMasterStr = ConfigurationManager.ConnectionStrings["ConnectionToMaster"].ConnectionString;
 
         /// <summary>
         /// Создать БД если она отсутствует
         /// </summary>
-        /// <param name="conStr"></param>
-        /// <returns></returns>
-        public async static Task<bool> CheckCreateDB(string conStr)
+        public async static Task<bool> CheckCreateDB()
         {
             bool isExistsDB = false, isExistsDBTables = false;
 
             try
             {
-                var db = await ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", conStr);
+                var db = await ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", _connectionMasterStr);
 
                 if (db)
                 {
@@ -40,7 +39,7 @@ namespace BankApplicationsWinForm.Services
 
                 if (!isExistsDB)
                 {
-                    isExistsDB = await CreateDB(conStr);
+                    isExistsDB = await CreateDB(_connectionMasterStr);
                 }
 
                 if (isExistsDB)
@@ -69,7 +68,7 @@ namespace BankApplicationsWinForm.Services
 
         private async static Task<bool> CreateTables()
         {
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             string query = Resources.CreateTables;
             SqlCommand command = new SqlCommand(query, connection);
 
@@ -124,10 +123,10 @@ namespace BankApplicationsWinForm.Services
             return false;
         }
 
-        public async static Task<bool> ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable, string castumConnectionString)
+        public async static Task<bool> ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable, string conStr)
         {
             bool result;
-            using (SqlConnection connection = new SqlConnection(castumConnectionString))
+            using (SqlConnection connection = new SqlConnection(conStr))
             {
                 string sqlExpression = sqlSelect + $" WHERE {sqlConditions}";
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
@@ -160,7 +159,7 @@ namespace BankApplicationsWinForm.Services
             {
                 string sqlExpression = $"UPDATE {nameTable} {setConditions} WHERE User_ID = {nameParam}";
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionDefaultStr))
                 {
                     connection.Open();
 
@@ -186,7 +185,7 @@ namespace BankApplicationsWinForm.Services
 
         public static bool ExecInsert(string sqlExpression)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionDefaultStr))
             {
                 connection.Open();
 
@@ -210,7 +209,7 @@ namespace BankApplicationsWinForm.Services
         /// <returns>Таблицу результаа запроса</returns>
         public static DataTable ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable)
         {
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             SqlDataAdapter da;
 
             DataSet tempDataset = new DataSet("temp");
@@ -261,7 +260,7 @@ namespace BankApplicationsWinForm.Services
 
         public static DataTable ExecSelect(string sqlSelect, string nameTable)
         {
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             SqlDataAdapter da;
 
             DataSet tempDataset = new DataSet("temp");

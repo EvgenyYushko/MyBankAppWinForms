@@ -164,16 +164,11 @@ namespace BankApplicationsWinForm
         {
             // Создавать базу если её нету.
 
-            //string chekDB = Properties.Resources.CheckCreateDB;
-            string con = @"Data Source=.\SQLEXPRESS;Initial Catalog=master;Integrated Security=True"; // вынести в ресурсы
-
             Cursor = Cursors.WaitCursor;
             try
             {
-                if (!await DataBaseService.CheckCreateDB(con))
-                {
+                if (!await DataBaseService.CheckCreateDB())
                     throw new BankException("В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!");
-                }
                 else _isLoad = true;
             }
             finally
