@@ -218,3 +218,123 @@ Error Number: 208, State: 1, Class: 16
 [29.08.2020 11:59:03] Ошибка создания БД или таблиц!Выдано исключение типа "System.Exception".
 [29.08.2020 11:59:25] В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!
 [30.08.2020 19:53:25] БД BankApp найдена!
+[01.09.2020 19:54:37] БД BankApp не сущесвует!
+[01.09.2020 19:54:40] БД BankApp успешно создана
+[01.09.2020 19:54:40] Нет доступа к данным! Проверьте настройки! : System.Data.SqlClient.SqlException (0x80131904): Недопустимое имя объекта "tbUsers".
+   в System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   в System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   в System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   в System.Data.SqlClient.SqlDataReader.get_MetaData()
+   в System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   в System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, String srcTable)
+   в BankApplicationsWinForm.Services.DataBaseService.<ExecSelect>d__9.MoveNext() в E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\Services\DataBaseService.cs:строка 276
+ClientConnectionId:be7c41e8-5430-4181-876c-765f92076cf5
+Error Number: 208, State: 1, Class: 16
+[01.09.2020 19:54:40] Нет доступа к данным! Проверьте настройки! : System.Data.SqlClient.SqlException (0x80131904): Недопустимое имя объекта "tbFiles".
+   в System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   в System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   в System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   в System.Data.SqlClient.SqlDataReader.get_MetaData()
+   в System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   в System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, String srcTable)
+   в BankApplicationsWinForm.Services.DataBaseService.<ExecSelect>d__9.MoveNext() в E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\Services\DataBaseService.cs:строка 276
+ClientConnectionId:be7c41e8-5430-4181-876c-765f92076cf5
+Error Number: 208, State: 1, Class: 16
+[01.09.2020 19:54:40] БД BankApp заполнена таблицами, всё ОК!
+[01.09.2020 19:54:45] Пользователя Евгений нет в системе
+[01.09.2020 19:55:09] Не удалось привести тип объекта "System.DBNull" к типу "System.String".
+[01.09.2020 19:55:09] Не удалось привести тип объекта "System.DBNull" к типу "System.String".
+[01.09.2020 19:55:09] Ошибка получения данных!
+[01.09.2020 19:55:09] Ошибка загрузки данных
+[01.09.2020 19:55:29] Отсутсвует аккаунт DemandAccount_Евгений
+[01.09.2020 19:55:29] Объект DemandAccount сохранён
+[01.09.2020 19:55:29] Отсутствует аккаунт DepositAccounts_Евгений
+[01.09.2020 19:55:29] Объект DepositAccounts_Евгений сохранён
+[01.09.2020 19:55:29] Все объекты успешно сохранены ОК
+[01.09.2020 19:55:31] БД BankApp найдена!
+[01.09.2020 19:55:34] Объект DemandAccount_Евгений загружен
+[01.09.2020 19:55:34] Объект DepositAccount_Евгений загружен
+[01.09.2020 19:55:34] Все объекты успешно загружены
+[01.09.2020 19:55:34] Загрзка ОК
+[01.09.2020 19:55:38] Объект DemandAccount сохранён
+[01.09.2020 19:55:38] Объект DepositAccounts_Евгений сохранён
+[01.09.2020 19:55:38] Все объекты успешно сохранены ОК
+[01.09.2020 20:27:02] БД BankApp не сущесвует!
+[01.09.2020 20:27:04] БД BankApp успешно создана
+[01.09.2020 20:27:05] Нет доступа к данным! Проверьте настройки! : System.Data.SqlClient.SqlException (0x80131904): Недопустимое имя объекта "tbUsers".
+   в System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   в System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   в System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   в System.Data.SqlClient.SqlDataReader.get_MetaData()
+   в System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   в System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, String srcTable)
+   в BankApplicationsWinForm.Services.DataBaseService.<ExecSelect>d__9.MoveNext() в E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\Services\DataBaseService.cs:строка 274
+ClientConnectionId:1703c204-754c-47be-92fb-9111f85e7b1c
+Error Number: 208, State: 1, Class: 16
+[01.09.2020 20:27:05] Нет доступа к данным! Проверьте настройки! : System.Data.SqlClient.SqlException (0x80131904): Недопустимое имя объекта "tbFiles".
+   в System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   в System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   в System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   в System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   в System.Data.SqlClient.SqlDataReader.get_MetaData()
+   в System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   в System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   в System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   в System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   в System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, String srcTable)
+   в BankApplicationsWinForm.Services.DataBaseService.<ExecSelect>d__9.MoveNext() в E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\Services\DataBaseService.cs:строка 274
+ClientConnectionId:1703c204-754c-47be-92fb-9111f85e7b1c
+Error Number: 208, State: 1, Class: 16
+[01.09.2020 20:27:05] БД BankApp заполнена таблицами, всё ОК!
+[01.09.2020 20:27:32] Не удалось привести тип объекта "System.DBNull" к типу "System.String".
+[01.09.2020 20:27:32] Не удалось привести тип объекта "System.DBNull" к типу "System.String".
+[01.09.2020 20:27:32] Ошибка получения данных!
+[01.09.2020 20:27:32] Ошибка загрузки данных
+[01.09.2020 20:27:45] Открыт новый счет до востребования!
+[01.09.2020 20:27:47] В банке прошло 1 дней.
+[01.09.2020 20:27:47] В банке прошло 2 дней.
+[01.09.2020 20:27:49] На счет поступило 2
+[01.09.2020 20:27:49] Счёт пополнен
+[01.09.2020 20:27:52] Сумма 1 снята со счета
+[01.09.2020 20:27:57] БД BankApp найдена!
+[01.09.2020 20:28:00] Объект DemandAccount_Евгений загружен
+[01.09.2020 20:28:00] Не удалось привести тип объекта "System.DBNull" к типу "System.String".
+[01.09.2020 20:28:00] Ошибка получения данных!
+[01.09.2020 20:28:00] Ошибка загрузки данных
+[01.09.2020 20:28:01] Отсутсвует аккаунт DemandAccount_Евгений

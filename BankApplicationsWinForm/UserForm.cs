@@ -111,7 +111,7 @@ namespace BankApplicationsWinForm
 
         #endregion
 
-        private void btOK_Click(object sender, EventArgs e)
+        private async void btOK_Click(object sender, EventArgs e)
         {
             if (_mustBeEntered.GetMustBeEnteredFields(out _fieldsText))
                 MessageBox.Show($"Не заполненны все обязательные поля\n\n{_fieldsText}", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
@@ -126,13 +126,13 @@ namespace BankApplicationsWinForm
                 _dataOfBirthStr = _dataOfBirth.Value.ToShortDateString();
                 _password = _cheaper.Encrypt(_tbReapidPassword.Text);
 
-                if (!SaveData())
+                if (!await SaveData())
                 {
                     Service.LogWrite($"Ошибка добавления/обновления данных в базу: ");
                     throw new Exception("Ошибка добавления/обновления данных в базу");
                 }
 
-                if (!SaveImage())
+                if (!await SaveImage())
                 {
                     Service.LogWrite($"Ошибка добавления/обновления изображения в базу: ");
                     throw new Exception("Ошибка добавления/обновления изображения в базу");
@@ -143,12 +143,12 @@ namespace BankApplicationsWinForm
             }
         }
 
-        private bool SaveImage()
+        private async Task<bool> SaveImage()
         {
             if (_imageData != null)
             {
                 // Костыль
-                var dtu = DataBaseService.ExecSelect("SELECT TOP 1 * FROM tbUsers ORDER BY [User_ID] DESC", "tbUsers");
+                var dtu = await DataBaseService.ExecSelect("SELECT TOP 1 * FROM tbUsers ORDER BY [User_ID] DESC", "tbUsers");
                 if (dtu.Rows.Count > 0)
                 {
                     DataRow row = dtu.Rows[0];
@@ -157,12 +157,12 @@ namespace BankApplicationsWinForm
                     _User_ID = User_ID;
                 }
 
-                var dt = DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{ _User_ID}", "tbFiles");
+                var dt = await DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{ _User_ID}", "tbFiles");
                 if (dt.Rows.Count > 0)
                 {
                     using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                     {
-                        connection.Open();
+                        await connection.OpenAsync();
                         SqlCommand command = new SqlCommand();
                         command.Connection = connection;
                         command.CommandText = @"UPDATE tbFiles SET Image = @ImageData WHERE User_ID = @User_ID";
@@ -172,14 +172,14 @@ namespace BankApplicationsWinForm
                         command.Parameters["@User_ID"].Value = _User_ID;
                         command.Parameters["@ImageData"].Value = _imageData;
 
-                        return command.ExecuteNonQuery() == 1 ? true : false;
+                        return await command.ExecuteNonQueryAsync() == 1 ? true : false;
                     }
                 }
                 else
                 {
                     using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                     {
-                        connection.Open();
+                        await connection.OpenAsync();
                         SqlCommand command = new SqlCommand();
                         command.Connection = connection;
                         command.CommandText = @"INSERT INTO tbFiles VALUES (@User_ID, @ImageData)";
@@ -189,14 +189,17 @@ namespace BankApplicationsWinForm
                         command.Parameters["@User_ID"].Value = _User_ID;
                         command.Parameters["@ImageData"].Value = _imageData;
 
-                        return command.ExecuteNonQuery() == 1 ? true : false;
+                        return await command.ExecuteNonQueryAsync() == 1 ? true : false;
                     }
                 }
             }
             else return true;
         }
 
-        public virtual bool SaveData() => false;
+        public async virtual Task<bool> SaveData()
+        {
+            return await DataBaseService.ExecSelect("test", "test", "test", "test", "test", "test");
+        }
 
         private void tbName_KeyPress(object sender, KeyPressEventArgs e)
         {

@@ -17,8 +17,6 @@ namespace BankApplicationsWinForm
 {
     public partial class CreateUserForm : UserForm
     {
-       
-
         public CreateUserForm(Form inputForm) :
             base(inputForm)
         {
@@ -26,11 +24,12 @@ namespace BankApplicationsWinForm
             base._tbOk.Text = "Создать профиль";
         }
 
-        override public bool SaveData()
+        public async override Task<bool> SaveData()
         {
             string sqlExpression = $"INSERT tbUsers VALUES ('{_gender}', '{_dataOfBirthStr}', '{_password}', '{_login}', NULL, NULL, '{_FName}', '{_LName}' )";
 
-            return DataBaseService.ExecInsert(sqlExpression);
+            return await DataBaseService.ExecInsert(sqlExpression);
+
         }
     }
 }

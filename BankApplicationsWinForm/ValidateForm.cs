@@ -44,13 +44,13 @@ namespace BankApplicationsWinForm
             set { textBox1 = value; }
         }
 
-        private void btOK_Click(object sender, EventArgs e)
+        private async void btOK_Click(object sender, EventArgs e)
         {
             // Новая реализация
             if (!_isLoad)
                 throw new Exception("Отсутствует подключение к БД! Обратитесь к администратор!");
 
-            var dt = DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{textBox1.Text}", "tbUsers");
+            var dt = await DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{textBox1.Text}", "tbUsers");
 
             if (dt.Rows.Count != 0)
             {

@@ -44,9 +44,8 @@ namespace BankApplicationsWinForm.Services
 
                 if (isExistsDB)
                 {
-                    // сделать асинх
-                    var tbUsers = ExecSelect($"SELECT * FROM tbUsers", "tbUsers") == null ? false : true;
-                    var tbFiles = ExecSelect($"SELECT * FROM tbFiles", "tbFiles") == null ? false : true;
+                    var tbUsers = await ExecSelect($"SELECT * FROM tbUsers", "tbUsers") == null ? false : true;
+                    var tbFiles = await ExecSelect($"SELECT * FROM tbFiles", "tbFiles") == null ? false : true;
                     isExistsDBTables = tbUsers && tbFiles;
 
                     if (!isExistsDBTables)
@@ -151,9 +150,9 @@ namespace BankApplicationsWinForm.Services
         /// <param name="nameParam">"Евгений"</param>
         /// <param name="nameTable">Имя таблицы "tbUsers"</param>
         /// <returns></returns>
-        public static bool ExecUpdate(string sqlConditions, string sqlParam, string nameParam, string nameTable, string setConditions)
+        public async static Task<bool> ExecUpdate(string sqlConditions, string sqlParam, string nameParam, string nameTable, string setConditions)
         {
-            var dt = ExecSelect($"SELECT * FROM {nameTable}", sqlConditions, sqlParam, nameParam, nameTable);
+            var dt = await ExecSelect($"SELECT * FROM {nameTable}", sqlConditions, sqlParam, nameParam, nameTable);
 
             if (dt.Rows.Count != 0)
             {
@@ -161,11 +160,11 @@ namespace BankApplicationsWinForm.Services
 
                 using (SqlConnection connection = new SqlConnection(_connectionDefaultStr))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     SqlCommand command = new SqlCommand(sqlExpression, connection);
 
-                    int rowAffected = command.ExecuteNonQuery();
+                    int rowAffected = await command.ExecuteNonQueryAsync();
 
                     if (rowAffected > 0)
                         return true;
@@ -175,7 +174,6 @@ namespace BankApplicationsWinForm.Services
             }
             else
             {
-                //string sqlExpression = $"INSERT tbUsers VALUES ('{FIO}', 'true', NULL, '{password}', '{login}')";
                 Service.LogWrite($"Отсутствует данный пользователь");
                 MessageBox.Show($"Отсутствует данный пользователь!", "Ошибка входа");
                 return false;
@@ -183,15 +181,15 @@ namespace BankApplicationsWinForm.Services
 
         }
 
-        public static bool ExecInsert(string sqlExpression)
+        public async static Task<bool> ExecInsert(string sqlExpression)
         {
             using (SqlConnection connection = new SqlConnection(_connectionDefaultStr))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
 
-                int rowAffected = command.ExecuteNonQuery();
+                int rowAffected = await command.ExecuteNonQueryAsync();
                 if (rowAffected > 0)
                     return true;
             }
@@ -207,7 +205,7 @@ namespace BankApplicationsWinForm.Services
         /// <param name="nameParam"></param>
         /// <param name="nameTable"></param>
         /// <returns>Таблицу результаа запроса</returns>
-        public static DataTable ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable)
+        public async static Task<DataTable> ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable)
         {
             SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             SqlDataAdapter da;
@@ -215,7 +213,7 @@ namespace BankApplicationsWinForm.Services
             DataSet tempDataset = new DataSet("temp");
             try
             {
-                connection.Open();
+                await connection.OpenAsync();
                 da = new SqlDataAdapter();
 
                 string sqlExpression = sqlSelect + $" WHERE {sqlConditions}";
@@ -258,7 +256,7 @@ namespace BankApplicationsWinForm.Services
             #endregion
         }
 
-        public static DataTable ExecSelect(string sqlSelect, string nameTable)
+        public async static Task<DataTable> ExecSelect(string sqlSelect, string nameTable)
         {
             SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             SqlDataAdapter da;
@@ -266,7 +264,7 @@ namespace BankApplicationsWinForm.Services
             DataSet tempDataset = new DataSet("temp");
             try
             {
-                connection.Open();
+                await connection.OpenAsync();
                 da = new SqlDataAdapter();
 
                 string sqlExpression = sqlSelect;

@@ -28,15 +28,15 @@ namespace BankApplicationsWinForm
             deCheaper = new XORCipher();
         }
 
-        public override bool SaveData()
+        public async override Task<bool> SaveData()
         {
-            return DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{((MainForm)base._form)._userID}", "tbUsers",
+            return await DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{((MainForm)base._form)._userID}", "tbUsers",
                 $"SET [Gender] = '{_gender}', [FName] = '{_FName}', [LName] = '{_LName}', [Password] = '{_password}', [Login] = '{_login}', [DateOfBirth] = '{_dataOfBirthStr}' ");
         }
 
-        public override void userForm_Load(object sender, EventArgs e)
+        public async override void userForm_Load(object sender, EventArgs e)
         {
-            var dt = DataBaseService.ExecSelect("SELECT * FROM tbUsers", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbUsers");
+            var dt = await DataBaseService.ExecSelect("SELECT * FROM tbUsers", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbUsers");
 
             if (dt.Rows.Count != 0)
             {
@@ -72,7 +72,7 @@ namespace BankApplicationsWinForm
 
         public async void ReadAsuncImage()
         {
-            DataTable dt = DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbFiles");
+            DataTable dt = await DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbFiles");
 
             if (dt.Rows.Count == 0)
                 return;

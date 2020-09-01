@@ -241,15 +241,15 @@ namespace BankApplicationsWinForm
 
         #region Сериализация/Десериализация объеткта Account
 
-        private void SaveDocuments(string idName)
+        private async void SaveDocuments(string idName)
         {
-            if (!_saveOrLoadable.SaveDocuments(idName))
+            if (!await _saveOrLoadable.SaveDocuments(idName))
                 Service.LogWrite("Ошибка сохранения данных");
         }
 
-        private void LoadDocuments(string idName)
+        private async void LoadDocuments(string idName)
         {
-            if (_saveOrLoadable.LoadDocuments(idName))
+            if (await _saveOrLoadable.LoadDocuments(idName))
             {
                 //Присваивание обработчиков для аккаунтов если они были десиреализованы
                 bank.Open(_accountEventsArcuments.AddSumHandler, _accountEventsArcuments.WithdrawSumHandler,
