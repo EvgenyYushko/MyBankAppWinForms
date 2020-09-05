@@ -11,7 +11,7 @@ namespace BankApplicationsWinForm
     static class Program
     {
         /// <summary>
-        /// Г
+        /// Гааааа
         /// </summary>
         [STAThread]
         static void Main()
