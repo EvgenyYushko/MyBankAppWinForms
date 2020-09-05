@@ -48,9 +48,9 @@ namespace BankApplicationsWinForm
         {
             // Новая реализация
             if (!_isLoad)
-                throw new Exception("Отсутствует подключение к БД! Обратитесь к администратор!");
+                throw new BankException("Отсутствует подключение к БД! Обратитесь к администратор!");
 
-            var dt = await DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{textBox1.Text}", "tbUsers");
+            var dt = await DataBaseService.ExecSelectAsync("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{textBox1.Text}", "tbUsers");
 
             if (dt.Rows.Count != 0)
             {
@@ -129,7 +129,7 @@ namespace BankApplicationsWinForm
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (!_isLoad)
-                throw new Exception("Отсутствует подключение к БД! Обратитесь к администратор!");
+                throw new BankException("Отсутствует подключение к БД! Обратитесь к администратор!");
 
             this.createUserForm = new CreateUserForm(this);
             createUserForm.Show();
@@ -152,7 +152,8 @@ namespace BankApplicationsWinForm
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
-        {   //вводим только буквы
+        {   
+            // Вводим только буквы
             char letter = e.KeyChar;
             if (!Char.IsLetter(letter) && letter != 8)
             {
@@ -163,11 +164,10 @@ namespace BankApplicationsWinForm
         private async void ValidateForm_Load(object sender, EventArgs e)
         {
             // Создавать базу если её нету.
-
             Cursor = Cursors.WaitCursor;
             try
             {
-                if (!await DataBaseService.CheckCreateDB())
+                if (!await DataBaseService.CheckCreateDBAsync())
                     throw new BankException("В процессе проверки и создания БД возникли ошибки! Проверьте настройки подключения! Смотри лог ошибок!");
                 else _isLoad = true;
             }

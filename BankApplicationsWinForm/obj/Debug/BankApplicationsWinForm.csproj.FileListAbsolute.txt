@@ -33,3 +33,4 @@ E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.UserForm.resources
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.CreateUserForm.resources
 E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.ViewUserForm.resources
+E:\С#\Мои проекты\MyBankAppWinForms\BankApplicationsWinForm\obj\Debug\BankApplicationsWinForm.csprojResolveAssemblyReference.cache

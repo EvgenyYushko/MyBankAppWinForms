@@ -24,19 +24,19 @@ namespace BankApplicationsWinForm
             base(inputForm)
         {
             base.Text = "Ваш профиль";
-            base._tbOk.Text = "Сохранить";
+            base._btOk.Text = "Сохранить";
             deCheaper = new XORCipher();
         }
 
         public async override Task<bool> SaveData()
         {
-            return await DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{((MainForm)base._form)._userID}", "tbUsers",
+            return await DataBaseService.ExecUpdateAsync("User_ID = @User_ID", "User_ID", $"{((MainForm)base._form)._userID}", "tbUsers",
                 $"SET [Gender] = '{_gender}', [FName] = '{_FName}', [LName] = '{_LName}', [Password] = '{_password}', [Login] = '{_login}', [DateOfBirth] = '{_dataOfBirthStr}' ");
         }
 
         public async override void userForm_Load(object sender, EventArgs e)
         {
-            var dt = await DataBaseService.ExecSelect("SELECT * FROM tbUsers", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbUsers");
+            var dt = await DataBaseService.ExecSelectAsync("SELECT * FROM tbUsers", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbUsers");
 
             if (dt.Rows.Count != 0)
             {
@@ -65,14 +65,12 @@ namespace BankApplicationsWinForm
                 this._dataOfBirth.Value = dataOfBirth;
 
                 ReadAsuncImage();
-                
             }
-
         }
 
         public async void ReadAsuncImage()
         {
-            DataTable dt = await DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbFiles");
+            DataTable dt = await DataBaseService.ExecSelectAsync("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{((MainForm)_form)._userID}", "tbFiles");
 
             if (dt.Rows.Count == 0)
                 return;
@@ -112,7 +110,6 @@ namespace BankApplicationsWinForm
                 
                 _pictureBox1.Image = Image.FromFile(path);
             }
-
         }
     }
     #region OldRealization

@@ -1,4 +1,5 @@
-﻿using BankApplicationsWinForm.Interfaces;
+﻿using BankApplicationsWinForm.Exceptions;
+using BankApplicationsWinForm.Interfaces;
 using BankApplicationsWinForm.Interfaces.Cheaper;
 using BankApplicationsWinForm.Services;
 using System;
@@ -30,15 +31,12 @@ namespace BankApplicationsWinForm
         string _fullFileName;
         protected int _User_ID;
         protected byte[] _imageData;
-        private int myVar;
-        bool _resultSaveImage;
 
         protected PictureBox _pictureBox1
         {
             get { return pictureBox1; }
             set { pictureBox1 = value; }
         }
-
 
         IMustBeEntered _mustBeEntered;
         ICheaper _cheaper;
@@ -107,7 +105,7 @@ namespace BankApplicationsWinForm
             set { tbPassword = value; }
         }
 
-        protected Button _tbOk { get => btOK; set => btOK = value; }
+        protected Button _btOk { get => btOK; set => btOK = value; }
 
         #endregion
 
@@ -128,14 +126,12 @@ namespace BankApplicationsWinForm
 
                 if (!await SaveData())
                 {
-                    Service.LogWrite($"Ошибка добавления/обновления данных в базу: ");
-                    throw new Exception("Ошибка добавления/обновления данных в базу");
+                    throw new BankException("Ошибка добавления/обновления данных в базу");
                 }
 
                 if (!await SaveImage())
                 {
-                    Service.LogWrite($"Ошибка добавления/обновления изображения в базу: ");
-                    throw new Exception("Ошибка добавления/обновления изображения в базу");
+                    throw new BankException("Ошибка добавления/обновления изображения в базу");
                 }
 
                 Close();
@@ -148,7 +144,7 @@ namespace BankApplicationsWinForm
             if (_imageData != null)
             {
                 // Костыль
-                var dtu = await DataBaseService.ExecSelect("SELECT TOP 1 * FROM tbUsers ORDER BY [User_ID] DESC", "tbUsers");
+                var dtu = await DataBaseService.ExecSelectAsync("SELECT TOP 1 * FROM tbUsers ORDER BY [User_ID] DESC", "tbUsers");
                 if (dtu.Rows.Count > 0)
                 {
                     DataRow row = dtu.Rows[0];
@@ -157,7 +153,7 @@ namespace BankApplicationsWinForm
                     _User_ID = User_ID;
                 }
 
-                var dt = await DataBaseService.ExecSelect("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{ _User_ID}", "tbFiles");
+                var dt = await DataBaseService.ExecSelectAsync("SELECT * FROM tbFiles", "User_ID = @User_ID", "User_ID", $"{ _User_ID}", "tbFiles");
                 if (dt.Rows.Count > 0)
                 {
                     using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
@@ -198,7 +194,7 @@ namespace BankApplicationsWinForm
 
         public async virtual Task<bool> SaveData()
         {
-            return await DataBaseService.ExecSelect("test", "test", "test", "test", "test", "test");
+            return await DataBaseService.ExecSelectAsync("test", "test", "test", "test", "test", "test");
         }
 
         private void tbName_KeyPress(object sender, KeyPressEventArgs e)
@@ -265,8 +261,7 @@ namespace BankApplicationsWinForm
                 FileInfo file = new FileInfo(_fullFileName);
                 if (file.Length > 20971520)
                 {
-                    Service.LogWrite($"Файл {_fullFileName} слишком большой, и не может быть загружен в базу!");
-                    throw new Exception($"Файл {_fullFileName} слишком большой, и не может быть загружен в базу!");
+                    throw new BankException($"Файл {_fullFileName} слишком большой, и не может быть загружен в базу!");
                 }
 
                 using (FileStream fs = new FileStream(_fullFileName, FileMode.Open))

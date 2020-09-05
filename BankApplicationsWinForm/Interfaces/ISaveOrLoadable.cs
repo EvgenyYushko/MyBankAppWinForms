@@ -8,7 +8,7 @@ namespace BankApplicationsWinForm.Interfaces
 {
     interface ISaveOrLoadable
     {
-        Task<bool> SaveDocuments(string str);
-        Task<bool> LoadDocuments(string str);
+        Task<bool> SaveDocumentsAsunc(string str);
+        Task<bool> LoadDocumentsAsunc(string str);
     }
 }

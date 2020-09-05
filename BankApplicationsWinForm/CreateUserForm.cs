@@ -21,15 +21,14 @@ namespace BankApplicationsWinForm
             base(inputForm)
         {
             base.Text = "Регистарция";
-            base._tbOk.Text = "Создать профиль";
+            base._btOk.Text = "Создать профиль";
         }
 
         public async override Task<bool> SaveData()
         {
             string sqlExpression = $"INSERT tbUsers VALUES ('{_gender}', '{_dataOfBirthStr}', '{_password}', '{_login}', NULL, NULL, '{_FName}', '{_LName}' )";
 
-            return await DataBaseService.ExecInsert(sqlExpression);
-
+            return await DataBaseService.ExecInsertAsync(sqlExpression);
         }
     }
 }

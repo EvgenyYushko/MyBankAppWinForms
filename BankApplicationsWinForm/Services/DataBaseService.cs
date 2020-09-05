@@ -10,25 +10,26 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BankApplicationsWinForm.Exceptions;
 
 namespace BankApplicationsWinForm.Services
 {
     public static class DataBaseService
     {
-        // получаем строку подключения
+        // Получаем строки подключения
         static string _connectionDefaultStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         static string _connectionMasterStr = ConfigurationManager.ConnectionStrings["ConnectionToMaster"].ConnectionString;
 
         /// <summary>
-        /// Создать БД если она отсутствует
+        /// Проверка на наличие БД если она отсутствует - создаём
         /// </summary>
-        public async static Task<bool> CheckCreateDB()
+        public async static Task<bool> CheckCreateDBAsync()
         {
             bool isExistsDB = false, isExistsDBTables = false;
 
             try
             {
-                var db = await ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", _connectionMasterStr);
+                var db = await ExecSelectAsync($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", _connectionMasterStr);
 
                 if (db)
                 {
@@ -39,22 +40,21 @@ namespace BankApplicationsWinForm.Services
 
                 if (!isExistsDB)
                 {
-                    isExistsDB = await CreateDB(_connectionMasterStr);
+                    isExistsDB = await CreateDBAsync(_connectionMasterStr);
                 }
 
                 if (isExistsDB)
                 {
-                    var tbUsers = await ExecSelect($"SELECT * FROM tbUsers", "tbUsers") == null ? false : true;
-                    var tbFiles = await ExecSelect($"SELECT * FROM tbFiles", "tbFiles") == null ? false : true;
+                    var tbUsers = await ExecSelectAsync($"SELECT * FROM tbUsers", "tbUsers") == null ? false : true;
+                    var tbFiles = await ExecSelectAsync($"SELECT * FROM tbFiles", "tbFiles") == null ? false : true;
                     isExistsDBTables = tbUsers && tbFiles;
 
                     if (!isExistsDBTables)
-                        isExistsDBTables = await CreateTables();
+                        isExistsDBTables = await CreateTablesForDefaultDBAsync();
                 }
                 else
                 {
                     Service.LogWrite("Ошибка создания БД!");
-                    return false;
                 }
             }
             catch (Exception e)
@@ -65,7 +65,10 @@ namespace BankApplicationsWinForm.Services
             return isExistsDB && isExistsDBTables;
         }
 
-        private async static Task<bool> CreateTables()
+        /// <summary>
+        /// Создаём таблицы для нашей БД
+        /// </summary>
+        private async static Task<bool> CreateTablesForDefaultDBAsync()
         {
             SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             string query = Resources.CreateTables;
@@ -95,11 +98,17 @@ namespace BankApplicationsWinForm.Services
             return true;
         }
 
-        private async static Task<bool> CreateDB(string conStr)
+        /// <summary>
+        /// Создать нашу БД
+        /// </summary>
+        /// <param name="conStr">Строка подключения</param>
+        private async static Task<bool> CreateDBAsync(string conStr)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(@"C:\SQL INSTAL\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\");
             if (!dirInfo.Exists)
                 dirInfo.Create();
+            if (!dirInfo.Exists)
+                throw new BankException("Ошибка создания папки для хранения БД");
 
             using (SqlConnection connection = new SqlConnection(conStr))
             {
@@ -111,7 +120,7 @@ namespace BankApplicationsWinForm.Services
                 await command.ExecuteNonQueryAsync();
             }
 
-            var db = await ExecSelect($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", conStr);
+            var db = await ExecSelectAsync($"SELECT * FROM sys.databases", "name = @name", "name", "BankApp", "sys.databases", conStr);
 
             if (db)
             {
@@ -122,7 +131,16 @@ namespace BankApplicationsWinForm.Services
             return false;
         }
 
-        public async static Task<bool> ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable, string conStr)
+        /// <summary>
+        /// Получить данные из БД
+        /// </summary>
+        /// <param name="sqlSelect">sql выражение "SELECT * FROM"</param>
+        /// <param name="sqlConditions">sql условие "UID = @UID"</param>
+        /// <param name="sqlParam">значение параметра</param>
+        /// <param name="nameParam">имя парметра "@UID"</param>
+        /// <param name="nameTable">имя таблицы</param>
+        /// <param name="conStr">строка подключения</param>
+        public async static Task<bool> ExecSelectAsync(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable, string conStr)
         {
             bool result;
             using (SqlConnection connection = new SqlConnection(conStr))
@@ -146,13 +164,12 @@ namespace BankApplicationsWinForm.Services
         /// Обновить данные в базе
         /// </summary>
         /// <param name="sqlConditions">условие выборки</param>
-        /// <param name="sqlParam">"Login"</param>
-        /// <param name="nameParam">"Евгений"</param>
+        /// <param name="sqlParam">значение параметра "Login"</param>
+        /// <param name="nameParam">имя параметра "Евгений"</param>
         /// <param name="nameTable">Имя таблицы "tbUsers"</param>
-        /// <returns></returns>
-        public async static Task<bool> ExecUpdate(string sqlConditions, string sqlParam, string nameParam, string nameTable, string setConditions)
+        public async static Task<bool> ExecUpdateAsync(string sqlConditions, string sqlParam, string nameParam, string nameTable, string setConditions)
         {
-            var dt = await ExecSelect($"SELECT * FROM {nameTable}", sqlConditions, sqlParam, nameParam, nameTable);
+            var dt = await ExecSelectAsync($"SELECT * FROM {nameTable}", sqlConditions, sqlParam, nameParam, nameTable);
 
             if (dt.Rows.Count != 0)
             {
@@ -178,10 +195,13 @@ namespace BankApplicationsWinForm.Services
                 MessageBox.Show($"Отсутствует данный пользователь!", "Ошибка входа");
                 return false;
             }
-
         }
 
-        public async static Task<bool> ExecInsert(string sqlExpression)
+        /// <summary>
+        /// Добавить данные в таблицу
+        /// </summary>
+        /// <param name="sqlExpression">выражения для вставки</param>
+        public async static Task<bool> ExecInsertAsync(string sqlExpression)
         {
             using (SqlConnection connection = new SqlConnection(_connectionDefaultStr))
             {
@@ -199,13 +219,13 @@ namespace BankApplicationsWinForm.Services
         /// <summary>
         /// Получить данные из базы
         /// </summary>
-        /// <param name="sqlSelect">Выражения выборки</param>
-        /// <param name="sqlConditions">Условия выборки</param>
-        /// <param name="sqlParam"></param>
-        /// <param name="nameParam"></param>
-        /// <param name="nameTable"></param>
+        /// <param name="sqlSelect">Выражения выборки "SELECT * FROM"</param>
+        /// <param name="sqlConditions">Условия выборки "UID = @UID"</param>
+        /// <param name="sqlParam">значение параметра</param>
+        /// <param name="nameParam">имя параметра "@UID"</param>
+        /// <param name="nameTable">название таблицы</param>
         /// <returns>Таблицу результаа запроса</returns>
-        public async static Task<DataTable> ExecSelect(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable)
+        public async static Task<DataTable> ExecSelectAsync(string sqlSelect, string sqlConditions, string sqlParam, string nameParam, string nameTable)
         {
             SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             SqlDataAdapter da;
@@ -256,7 +276,13 @@ namespace BankApplicationsWinForm.Services
             #endregion
         }
 
-        public async static Task<DataTable> ExecSelect(string sqlSelect, string nameTable)
+        /// <summary>
+        /// Получить данные из базы
+        /// </summary>
+        /// <param name="sqlSelect">sql Запрос "SELECT * FROM"</param>
+        /// <param name="nameTable">имя тадицы</param>
+        /// <returns>Таблицу результаа запроса</returns>
+        public async static Task<DataTable> ExecSelectAsync(string sqlSelect, string nameTable)
         {
             SqlConnection connection = new SqlConnection(_connectionDefaultStr);
             SqlDataAdapter da;

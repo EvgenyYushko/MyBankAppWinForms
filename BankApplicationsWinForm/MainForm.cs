@@ -61,7 +61,7 @@ namespace BankApplicationsWinForm
             bank = new Bank<Account>("ЮнитБанк");
 
             _saveOrLoadable = new SaveOrLoader(this, bank);
-          
+
             LoadDocuments($"{validateForm._name}");
         }
 
@@ -204,7 +204,6 @@ namespace BankApplicationsWinForm
             Account acc = (Account)comboBox1.SelectedItem;
             if (acc != null)
             {
-                //textBox3.Text = bank.GetPercent(acc.Id);
                 TextBox2Prop.Text = acc.Sum.ToString();
                 TextBox3Prop.Text = bank.GetPercent(acc.Id);
                 TextBox4Prop.Text = acc._days.ToString();
@@ -217,11 +216,8 @@ namespace BankApplicationsWinForm
             validateForm.Close();
 
             DirectoryInfo dirInfo = new DirectoryInfo($"cash");
-            var s = dirInfo.FullName;
             foreach (FileInfo f in dirInfo.GetFiles())
-            {
                 f.Delete();
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -243,13 +239,13 @@ namespace BankApplicationsWinForm
 
         private async void SaveDocuments(string idName)
         {
-            if (!await _saveOrLoadable.SaveDocuments(idName))
+            if (!await _saveOrLoadable.SaveDocumentsAsunc(idName))
                 Service.LogWrite("Ошибка сохранения данных");
         }
 
         private async void LoadDocuments(string idName)
         {
-            if (await _saveOrLoadable.LoadDocuments(idName))
+            if (await _saveOrLoadable.LoadDocumentsAsunc(idName))
             {
                 //Присваивание обработчиков для аккаунтов если они были десиреализованы
                 bank.Open(_accountEventsArcuments.AddSumHandler, _accountEventsArcuments.WithdrawSumHandler,
@@ -259,7 +255,6 @@ namespace BankApplicationsWinForm
             {
                 Service.LogWrite("Ошибка загрузки данных");
                 this.button2.Text = "Error";
-                //throw new Exception("Ошибка загрузки данных");
             }
         }
         #endregion

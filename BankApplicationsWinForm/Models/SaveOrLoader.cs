@@ -1,4 +1,5 @@
-﻿using BankApplicationsWinForm.Interfaces;
+﻿using BankApplicationsWinForm.Exceptions;
+using BankApplicationsWinForm.Interfaces;
 using BankApplicationsWinForm.Services;
 using BankLibrary;
 using System;
@@ -42,8 +43,7 @@ namespace BankApplicationsWinForm.Models
         /// Сохранение данных
         /// </summary>
         /// <param name="idName"></param>
-        /// <returns></returns>
-        public async Task<bool> SaveDocuments(string idName)
+        public async Task<bool> SaveDocumentsAsunc(string idName)
         {
             bool saveDamand = false;
             bool saveDeposit = false;
@@ -72,7 +72,7 @@ namespace BankApplicationsWinForm.Models
                     formatterDemand.Serialize(stringWriter, demList.ToArray());
                     var data = stringWriter.ToString();
 
-                    await DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{mainForm._userID}", "tbUsers",  $"SET [DemandData] = '{data}' ");
+                    await DataBaseService.ExecUpdateAsync("User_ID = @User_ID", "User_ID", $"{mainForm._userID}", "tbUsers",  $"SET [DemandData] = '{data}' ");
 
                     Service.LogWrite("Объект DemandAccount сохранён");
                     saveDamand = true;
@@ -137,7 +137,7 @@ namespace BankApplicationsWinForm.Models
                     formatterDeposit.Serialize(stringWriter, depList.ToArray());
                     var data = stringWriter.ToString();
 
-                    await DataBaseService.ExecUpdate("User_ID = @User_ID", "User_ID", $"{mainForm._userID}", "tbUsers",  $"SET [DepositData] = '{data}' ");
+                    await DataBaseService.ExecUpdateAsync("User_ID = @User_ID", "User_ID", $"{mainForm._userID}", "tbUsers",  $"SET [DepositData] = '{data}' ");
 
                     Service.LogWrite($"Объект DepositAccounts_{idName} сохранён");
                     saveDeposit = true;
@@ -179,7 +179,7 @@ namespace BankApplicationsWinForm.Models
                     Service.LogWrite("Все объекты успешно сохранены ОК");
                     return true;
                 }
-                else throw new Exception("Ошибка сохранения!");
+                else throw new BankException("Ошибка сохранения!");
 
             }
             catch (Exception ex)
@@ -191,11 +191,10 @@ namespace BankApplicationsWinForm.Models
         }
 
         /// <summary>
-        /// Получение данных
+        /// Загрузка данных
         /// </summary>
         /// <param name="idName"></param>
-        /// <returns></returns>
-        public async Task<bool> LoadDocuments(string idName)
+        public async Task<bool> LoadDocumentsAsunc(string idName)
         {
             XmlSerializer serializerDem = new XmlSerializer(typeof(DemandAccount[]));
             XmlSerializer serializerDep = new XmlSerializer(typeof(DepositAccount[]));
@@ -209,7 +208,7 @@ namespace BankApplicationsWinForm.Models
             {
                 try // Восстанавливаем объект DemandAccount из базы.
                 {
-                    var dt = await DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{mainForm._idName}", "tbUsers");
+                    var dt = await DataBaseService.ExecSelectAsync("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{mainForm._idName}", "tbUsers");
                     if (dt.Rows.Count != 0)
                     {
                         foreach (DataRow row in dt.Rows)
@@ -261,7 +260,7 @@ namespace BankApplicationsWinForm.Models
 
                 try // Восстанавливаем объект DepositAccount из базы.
                 {
-                    var dt = await DataBaseService.ExecSelect("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{mainForm._idName}", "tbUsers");
+                    var dt = await DataBaseService.ExecSelectAsync("SELECT * FROM tbUsers", "Login = @Login", "Login", $"{mainForm._idName}", "tbUsers");
                     if (dt.Rows.Count != 0)
                     {
                         foreach (DataRow row in dt.Rows)
