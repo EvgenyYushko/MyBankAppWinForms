@@ -26,7 +26,7 @@ namespace BankApplicationsWinForm.Models
             Service.LogWrite(e.Message);
             mainForm.LabelInfoProp.Text = e.Message;
         }
-        // обработчик добавления денег на счет
+        // обработчик добавления денег на счет!!
         public void AddSumHandler(object sender, AccountEventArgs e)
         {
             mainForm.LabelInfoProp.Text = e.Message;
