@@ -11,7 +11,7 @@ namespace BankApplicationsWinForm
     static class Program
     {
         /// <summary>
-        /// Главная точка входа для.
+        /// Г
         /// </summary>
         [STAThread]
         static void Main()
