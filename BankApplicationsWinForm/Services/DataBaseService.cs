@@ -16,7 +16,7 @@ namespace BankApplicationsWinForm.Services
 {
     public static class DataBaseService
     {
-        // Получаем строки подключения
+        // Получаем строки подключения   
         static string _connectionDefaultStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         static string _connectionMasterStr = ConfigurationManager.ConnectionStrings["ConnectionToMaster"].ConnectionString;
 
